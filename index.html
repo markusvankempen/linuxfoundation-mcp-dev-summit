@@ -170,9 +170,6 @@
     .timer.visible { display: inline-block; }
     .timer.over { background: var(--coral); color: #fff; }
     .progress { position: fixed; z-index: 6; left: 0; top: 0; height: 5px; background: var(--coral); width: 0; transition: width .25s ease; }
-    .notes { display: none; position: fixed; z-index: 10; left: 50%; bottom: 72px; transform: translateX(-50%); width: min(760px, calc(100% - 40px)); background: var(--ink); color: white; border-radius: 12px; padding: 18px 22px; box-shadow: var(--shadow); font-size: 15px; line-height: 1.5; }
-    .notes.visible { display: block; }
-    .notes::before { content: 'SPEAKER NOTE — VISIBLE ON THE PROJECTOR'; display: block; color: var(--lime); font: 12px var(--code); margin-bottom: 8px; }
     .source { margin-top: 24px; font: 14px var(--code); color: var(--muted); }
     .lede a, .source a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(13,122,99,.35); }
     .lede a:hover, .source a:hover { border-bottom-color: var(--green); }
@@ -246,7 +243,7 @@
         break-after: page; page-break-after: always; break-inside: avoid;
       }
       .slide:last-of-type { break-after: auto; page-break-after: auto; }
-      .progress, .controls, .notes, .jump-dialog, .footer, .timer { display: none !important; }
+      .progress, .controls, .jump-dialog, .footer, .timer { display: none !important; }
       .print-footer { display: flex; }
       .panel, .mode-table, .qr-card { box-shadow: none; }
 
@@ -287,8 +284,7 @@
     <!-- 01 -->
     <section class="slide active"
       data-ref="github.com/markusvankempen/mcp-ticket-demo"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
-      data-note="Open with the distinction. Say out loud that these are personal open-source projects, not IBM products. Then point at the footer: every example in this talk is one small server you can clone tonight — mcp-ticket-demo. The lessons came from five different servers; the runnable version of all of them is that one repo.">
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
         <div class="eyebrow">MCP Dev Summit Toronto · 25 minutes</div>
         <h1>MCP as a Platform<br><span class="accent">What I Learned Building a Portfolio of MCP Servers</span></h1>
@@ -306,8 +302,7 @@
     <!-- 02 -->
     <section class="slide"
       data-ref="markusvankempen.github.io"
-      data-ref-url="https://markusvankempen.github.io/"
-      data-note="Read the five domains fast — they are just the range: a couple of tools at one end, dozens at the other. Then slow down on the six questions, because this is the agenda for the next twenty minutes. Every one came up on every server regardless of domain, and that repetition is the whole reason these projects belong in one talk. Linger on the last card: I have a working answer for the first five, and I do not have one for the last. It is the only question in this deck I cannot fix inside my own code, so it is where we finish.">
+      data-ref-url="https://markusvankempen.github.io/">
       <div class="content">
         <div class="eyebrow">The portfolio</div>
         <h2>Different systems.<br><span class="accent">The same six questions.</span></h2>
@@ -332,8 +327,7 @@
     <!-- 03 -->
     <section class="slide"
       data-ref="github.com/markusvankempen/mcp-ticket-demo"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
-      data-note="Ten seconds on the domain first, then the diagram. Say it out loud: for this talk, imagine we are exposing a Zendesk-style ticketing system to an AI agent — search, create, comment. That is MCP Demo. Then the architecture: the extension is the front door, local stdio is the fast developer path, remote HTTP is the shared path. Same tools, same schemas, same tickets in all three. The next slides are all about those ticket tools.">
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
         <div class="eyebrow">The recurring architecture</div>
         <h2>One capability.<br><span class="accent">Three ways to run it.</span></h2>
@@ -357,8 +351,7 @@
     <!-- 04 -->
     <section class="slide"
       data-ref="github.com/markusvankempen/mcp-ticket-demo"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
-      data-note="This is where a demo becomes a reusable server. The first tool feels like the whole product, and then the real requests arrive. Every line in that list is a slide coming up, in order — so this is also the map for the next ten minutes.">
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
         <div class="eyebrow">Lesson 01 · Tool design</div>
         <h2>The first version is<br><span class="accent">deceptively simple.</span></h2>
@@ -381,8 +374,7 @@ That is a working MCP server. Then the real requests arrive:
       data-ref="mcp-ticket-demo"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
       data-ref2="zendesk-mcp — where this bit me"
-      data-ref2-url="https://github.com/markusvankempen/zendesk-mcp"
-      data-note="Create, search, comment and close are different user journeys, not HTTP verbs on one resource. The second block is the shape I keep being tempted by, because it is less code and it wraps the whole API in one tool. It also pushes every decision onto the model. Both signatures are real: the top one is what mcp-ticket-demo ships, and the bottom is what the first draft of the Zendesk server looked like.">
+      data-ref2-url="https://github.com/markusvankempen/zendesk-mcp">
       <div class="content">
         <div class="eyebrow">Lesson 01 · Tool design</div>
         <h2>At a handful of tools,<br><span class="accent">naming is the interface at dozens.</span></h2>
@@ -406,8 +398,7 @@ and every decision for the model.</div>
       data-ref="maximo-mcp-ai-integration-options"
       data-ref-url="https://github.com/markusvankempen/maximo-mcp-ai-integration-options"
       data-ref2="mcp-ticket-demo — the same three tools"
-      data-ref2-url="https://github.com/markusvankempen/mcp-ticket-demo"
-      data-note="Anchor slide — spend about three minutes here. This happened on the Maximo server: a broad enterprise API makes it easy to ship one tool per query shape. Every name was technically correct and the model still picked wrong, because tool selection is a ranking problem and near-identical descriptions make it a coin flip. I collapsed the whole query surface into schema discovery plus one query tool. Those same three tools are in mcp-ticket-demo, so anyone can try both shapes against the same data.">
+      data-ref2-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
         <div class="eyebrow">Lesson 01 · Tool overload</div>
         <h2>More tools didn't mean<br><span class="accent">more capability.</span></h2>
@@ -443,8 +434,7 @@ Selection stopped being a coin flip.</span></div>
       data-ref="mcp-ticket-demo — reproduce in one call"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
       data-ref2="zendesk-mcp — the original"
-      data-ref2-url="https://github.com/markusvankempen/zendesk-mcp"
-      data-note="My favourite scar. create_ticket returned 201 every single time, so it looked finished. But the ticket was owned by the API service account, which meant the platform mailed every reply to the bot instead of the customer. Nobody noticed until a customer asked why they never got an answer. The API call succeeding told me nothing about whether the tool was right. This reproduces in the demo: call create_ticket without requester_email and look at who owns the ticket.">
+      data-ref2-url="https://github.com/markusvankempen/zendesk-mcp">
       <div class="content">
         <div class="eyebrow">Lesson 02 · The tool is not the API call</div>
         <h2>The hardest tool wasn't<br><span class="accent">the complicated one.</span></h2>
@@ -461,8 +451,7 @@ Selection stopped being a coin flip.</span></div>
     <!-- 08 -->
     <section class="slide"
       data-ref="mcp-ticket-demo — ships with MCP Workbench"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
-      data-note="The extension is not decoration — it is what closes the gap between a server existing and a developer trusting it. Show the Workbench here if the room is warm: it works against any MCP server, not just mine, and the diagnostics run in order so the first red step is the actual problem. Ship it with the demo so nobody has to guess whether the failure is their config or my code.">
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
         <div class="eyebrow">Lesson 03 · Developer experience</div>
         <h2>A tool is a UI for an agent.<br><span class="accent">An extension is a UI for the developer.</span></h2>
@@ -480,8 +469,7 @@ Selection stopped being a coin flip.</span></div>
       data-ref="wxo-labs · Lab 7 — MCP Basics"
       data-ref-url="https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#lab-7-mcp-basics---your-first-mcp-server"
       data-ref2="Lab 8 — MCP Advanced (SSE, identity)"
-      data-ref2-url="https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#lab-8-mcp-advanced---user-context--credentials"
-      data-note="This one cost me an evening. Zero tools discovered, no error, no warning, nothing in a log. The runner is a cloud container and I handed it an absolute path from my laptop. It looked for that directory, found nothing, and a missing file reads as an empty tool list rather than an error. Shipping the package so the command runs relative to it is the fix. Mention the other stdio trap in passing — console.log on stdout corrupts the JSON-RPC stream — then say the next slide has the table. The runnable repro is Lab 7, and Lab 8 covers the remote transport and identity half.">
+      data-ref2-url="https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#lab-8-mcp-advanced---user-context--credentials">
       <div class="content">
         <div class="eyebrow">Lesson 04 · Local isn't remote</div>
         <h2>Zero tools discovered.<br><span class="accent">No error. No warning.</span></h2>
@@ -520,8 +508,7 @@ Different <span class="hl">execution context</span>.</div>
       data-ref="markusvankempen.github.io"
       data-ref-url="https://markusvankempen.github.io/"
       data-ref2="wxo-labs troubleshooting guide"
-      data-ref2-url="https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#troubleshooting-guide"
-      data-note="Walk this table slowly — one row at a time. Linger on the console.log row: stdout is the protocol on stdio, so a friendly 'database connected' corrupts the JSON-RPC stream and the client either hangs or throws a parse error that names nothing useful. The fix is one word — console.error. The pattern across the table is the takeaway: the failure mode was silence, or an error that told you nothing. Nothing threw a useful exception.">
+      data-ref2-url="https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#troubleshooting-guide">
       <div class="content">
         <div class="eyebrow">Lesson 04 · The messy parts</div>
         <h2>The failures that<br><span class="accent">taught me the most.</span></h2>
@@ -543,8 +530,7 @@ Different <span class="hl">execution context</span>.</div>
     <!-- 11 -->
     <section class="slide"
       data-ref="mcp-ticket-demo — auth modes, scopes, API keys"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
-      data-note="The question I had no good answer to for the longest. MCP tells you how to describe a tool and how to call one. It says nothing about who is allowed to. So every server invents this, and my first invention was a bare 403 — which is where the left block comes from. Land this point: a locked tool still appears in tools/list, so the model can see it and will try it. The refusal is the only place left to explain yourself, and the model will act on whatever you put there. Name the scope and where to get one. Then the last line, slowly: discovery stays open in every mode, because a client that cannot ask 'what do you need from me?' can only guess, and a guessing model loops. Live demo if the room is warm — flip the mode on /admin and call the same tool twice. On the click to the next slide, say this out loud: solving authentication, tooling, and transport for one server is hard enough. Once you start the second and third, the temptation is to build a massive framework to share all this logic. Don't.">
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
         <div class="eyebrow">Lesson 05 · Permission</div>
         <h2>Who is allowed to call it?<br><span class="accent">The protocol doesn't say.</span></h2>
@@ -576,8 +562,7 @@ on /admin → API keys.
     <!-- 12 -->
     <section class="slide"
       data-ref="markusvankempen.github.io"
-      data-ref-url="https://markusvankempen.github.io/"
-      data-note="Say it in one breath: the second server made me want one shared library. I copied the boring parts. I did not copy the tools. Then the two columns — left is the folder, the README, how it starts, how errors look, one test that it boots. Right is why a shared library fails: searching a ticket is not deploying a container, a read is not a write, your laptop is not a public URL. Don't build a platform for two servers. If someone asks how the next server leaves your laptop, jump to the Publish appendix — npm first, then the registry.">
+      data-ref-url="https://markusvankempen.github.io/">
       <div class="content">
         <div class="eyebrow">Lesson 06 · The next server</div>
         <h2>Copy the boring parts.<br><span class="accent">Leave the tools alone.</span></h2>
@@ -592,8 +577,7 @@ on /admin → API keys.
     <!-- 13 -->
     <section class="slide"
       data-ref="markusvankempen.github.io"
-      data-ref-url="https://markusvankempen.github.io/"
-      data-note="A developer should be able to answer all seven of these from the README alone, without opening an issue or messaging anyone. If the README cannot answer them, the server is not finished — no matter how good the code is.">
+      data-ref-url="https://markusvankempen.github.io/">
       <div class="content">
         <div class="eyebrow">Lesson 07 · Documentation</div>
         <h2>The README is<br><span class="accent">part of the API.</span></h2>
@@ -613,8 +597,7 @@ on /admin → API keys.
     <!-- 14 -->
     <section class="slide"
       data-ref="registry.modelcontextprotocol.io"
-      data-ref-url="https://registry.modelcontextprotocol.io/"
-      data-note="DEMO, then the ask. Two searches in a clean browser. First by capability — 'MCP server for ticket triage' — noise, nothing of mine. Then by product name: first page, straight up. Let the silence sit for a second, because that contrast is the whole slide. The cost: it is a word I do not own, the vendor can ship an official server tomorrow and I am second, and a server with no famous product in its name gets found by nobody. Then the agent — it cannot search at all, it reads a config file and nothing outside that file exists to it. Now the three cards, and this is the important framing: every other problem in this talk I fixed in my own code. These three I cannot touch. Card one is a protocol change — the spec would need a way to ask for a capability, not a name. Card two is a registry change — someone has to vouch that a publisher is who they claim. Card three is a client change — Cursor, VS Code, Claude would have to let an agent add a server itself. Spec, registries, clients. The maintainers of all three are sitting in this room, which is why I am asking here and not filing an issue. That is where I stop.">
+      data-ref-url="https://registry.modelcontextprotocol.io/">
       <div class="content">
         <div class="eyebrow">Lesson 08 · Discoverability</div>
         <h2>Publishing isn't the same as<br><span class="accent">being findable.</span></h2>
@@ -635,8 +618,7 @@ on /admin → API keys.
     <!-- 15 -->
     <section class="slide"
       data-ref="mcp-ticket-demo — README and tool descriptions"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
-      data-note="TIME THE INSTALL ON A CLEAN MACHINE BEFORE THE TALK and say the real number out loud on the first bullet. If it took forty minutes, say forty — that's worth more than any maxim in this deck. Linger on the 'no results' line. An empty array [] is not enough. The model assumes it searched wrong and will try five query permutations before it gives up. Write in the description: empty means the ticket does not exist — stop searching. That one sentence saves tokens, time, and rate-limit budget. The rest of the split: I wrote documentation for months before noticing only half my audience can read it. The model never opens the README. It sees tools/list and nothing else, so every edge case a model needs has to live inside the description field.">
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
         <div class="eyebrow">The readiness test</div>
         <h2>Does it work out of the box?<br><span class="accent">For a developer, and for a model.</span></h2>
@@ -651,8 +633,7 @@ on /admin → API keys.
     <!-- 16 -->
     <section class="slide"
       data-ref="markusvankempen.github.io"
-      data-ref-url="https://markusvankempen.github.io/"
-      data-note="Invite the audience to take one server further. This is the practical takeaway, not a claim the ecosystem is finished. Unpack 'honest metadata' out loud — it's the only abstract word in the list. Metadata is every claim your package and registry entry make before anyone installs: what it touches, what permissions it wants, what it was actually tested against, whether it's still maintained. Honest means those claims survive contact with reality. A read-only badge on a server that writes, or a confident 1.0.0 on something abandoned eighteen months ago, is the same failure as the 200 OK from earlier — a green light over a broken outcome. Then the fourth line: a place to find them is still the missing one.">
+      data-ref-url="https://markusvankempen.github.io/">
       <div class="content">
         <div class="eyebrow">The opportunity</div>
         <h2>MCP servers can become<br><span class="accent">more than integrations.</span></h2>
@@ -667,8 +648,7 @@ on /admin → API keys.
       data-ref="github.com/markusvankempen/mcp-ticket-demo"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
       data-ref2="markusvankempen.github.io"
-      data-ref2-url="https://markusvankempen.github.io/"
-      data-note="Leave this slide up for Q&amp;A. Ask them to scan the Sessionize QR while we talk — that's how the organizers hear whether this was useful. Push the demo repo once more: it is the smallest thing anyone in the room can clone tonight, and every example in this talk is in it. Every other server is linked from the portfolio page, and the footer on each slide points at the specific one. Labs if they want to build: 14 hands-on, two on MCP. Then → for the three legends, how I publish, and the contact card.">
+      data-ref2-url="https://markusvankempen.github.io/">
       <div class="content">
         <div class="close-split">
           <div>
@@ -698,8 +678,7 @@ on /admin → API keys.
       data-ref="modelcontextprotocol.io"
       data-ref-url="https://modelcontextprotocol.io/"
       data-ref2="IBM Cloud · Cloud Resource Names"
-      data-ref2-url="https://cloud.ibm.com/docs/account?topic=account-crn"
-      data-note="Q&amp;A backup. Product names stay out of the talk body — this is the cheat sheet. MCP is the protocol. WXO is the orchestrator from labs 7 and 8. A CRN is IBM Cloud's unique ID for a project or instance; that's why a new project means a new hostname on slide 9. API is the thing the tool wraps — remember create_ticket. ADK is how WXO actually imports an MCP server.">
+      data-ref2-url="https://cloud.ibm.com/docs/account?topic=account-crn">
       <div class="content">
         <div class="eyebrow">Appendix · Legend 1 / 3</div>
         <h2>The acronyms.<br><span class="accent">What they actually mean.</span></h2>
@@ -723,8 +702,7 @@ on /admin → API keys.
       data-ref="modelcontextprotocol.io/specification"
       data-ref-url="https://modelcontextprotocol.io/specification"
       data-ref2="docs/concepts/transports"
-      data-ref2-url="https://modelcontextprotocol.io/docs/concepts/transports"
-      data-note="Q&amp;A backup. The short answer people usually want: stdio has no port because there is no network — the client spawns the server as a child process. SSE and Streamable HTTP are ordinary HTTPS on whatever port your server binds, which in production means 443.">
+      data-ref2-url="https://modelcontextprotocol.io/docs/concepts/transports">
       <div class="content">
         <div class="eyebrow">Appendix · Legend 2 / 3</div>
         <h2>How MCP<br><span class="accent">actually talks.</span></h2>
@@ -747,8 +725,7 @@ on /admin → API keys.
       data-ref="registry.modelcontextprotocol.io"
       data-ref-url="https://registry.modelcontextprotocol.io/"
       data-ref2="markusvankempen.github.io"
-      data-ref2-url="https://markusvankempen.github.io/"
-      data-note="Q&amp;A backup. The /health, /test, /admin trio is my own convention, not part of the spec — say that when you show it.">
+      data-ref2-url="https://markusvankempen.github.io/">
       <div class="content">
         <div class="eyebrow">Appendix · Legend 3 / 3</div>
         <h2>Packaging,<br><span class="accent">config and distribution.</span></h2>
@@ -772,8 +749,7 @@ on /admin → API keys.
       data-ref="npmjs.com/package/mcp-ticket-demo"
       data-ref-url="https://www.npmjs.com/package/mcp-ticket-demo"
       data-ref2="registry.modelcontextprotocol.io"
-      data-ref2-url="https://registry.modelcontextprotocol.io/"
-      data-note="Q&amp;A backup for 'how do I publish the next one?' Slide 12 is what to copy. This is the last mile. Say the order out loud: npm first, wait, then the registry. The registry does not host the code. If they want the extension too, that's after — package the vsix and upload to Open VSX. Full checklist is internal/PUBLISHING.md. Don't put the whole command list on the projector unless someone asks.">
+      data-ref2-url="https://registry.modelcontextprotocol.io/">
       <div class="content">
         <div class="eyebrow">Appendix · Publish</div>
         <h2>Ship the package.<br><span class="accent">Then ship the name.</span></h2>
@@ -791,8 +767,7 @@ on /admin → API keys.
     <!-- A5 — contact card, appendix so the talk still reads 17 / 17 -->
     <section class="slide" data-appendix="true"
       data-ref="markusvankempen.github.io"
-      data-ref-url="https://markusvankempen.github.io/"
-      data-note="Leave this on the projector while the room empties, and say both addresses out loud once. The IBM one reaches me during the week; the personal one is the right place for anything open source in this deck. The floor joke is the honest answer to what my title means — get the laugh, then point at the portfolio page, which links every server and extension the talk mentions.">
+      data-ref-url="https://markusvankempen.github.io/">
       <div class="content">
         <div class="eyebrow">Appendix · Contact</div>
         <h2>Questions after the talk?<br><span class="accent">Both inboxes reach me.</span></h2>
@@ -807,12 +782,10 @@ on /admin → API keys.
     </section>
 
     <div class="footer" id="footer"></div>
-    <div class="notes" id="notes"></div>
     <div class="controls">
       <button id="prev" title="Previous slide (←)">←</button>
       <span class="counter" id="counter">01 / 17</span>
       <button id="next" title="Next slide (→)">→</button>
-      <button id="noteToggle" title="Toggle speaker notes (N) — these show on the projector">N</button>
       <button id="timerToggle" title="Toggle 25-minute timer (T)">T</button>
       <span class="timer" id="timer">00:00</span>
     </div>
@@ -830,7 +803,6 @@ on /admin → API keys.
       const progress = document.getElementById('progress');
       const counter = document.getElementById('counter');
       const footer = document.getElementById('footer');
-      const notes = document.getElementById('notes');
       const timer = document.getElementById('timer');
       let current = 0;
       let startedAt = null;
@@ -924,7 +896,6 @@ on /admin → API keys.
         progress.style.width = `${done * 100}%`;
         counter.textContent = label;
         renderFooter(slides[current], label);
-        notes.textContent = slides[current].dataset.note || '';
         history.replaceState(null, '', `#${current + 1}`);
       }
 
@@ -947,7 +918,6 @@ on /admin → API keys.
 
       document.getElementById('prev').addEventListener('click', () => show(current - 1));
       document.getElementById('next').addEventListener('click', () => show(current + 1));
-      document.getElementById('noteToggle').addEventListener('click', () => notes.classList.toggle('visible'));
       document.getElementById('timerToggle').addEventListener('click', toggleTimer);
 
       // --- Jump-to-slide dialog ---
@@ -990,7 +960,6 @@ on /admin → API keys.
         if (event.key === 'Home') show(0);
         if (event.key === 'End') show(slides.length - 1);
         const key = (event.key || '').toLowerCase();
-        if (key === 'n') notes.classList.toggle('visible');
         if (key === 't') toggleTimer();
         if (key === 'g') openJump();
       });

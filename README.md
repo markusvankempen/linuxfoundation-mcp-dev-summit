@@ -58,8 +58,6 @@ Markus van Kempen · Executive Architect & Venture Capitalist in Residence, IBM
 [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com) ·
 [markusvankempen.github.io](https://markusvankempen.github.io/)
 
-*Note: Say out loud that these are personal open-source projects, not IBM products. The contact
-row is on this slide so anyone arriving late can photograph it before the talk starts.*
 
 ---
 
@@ -78,7 +76,6 @@ row is on this slide so anyone arriving late can photograph it before the talk s
 | 5 | Can a developer use it without me? Can a model? | Slides 8, 12, 15 (DX, README, readiness) |
 | 6 | How does anyone find it? | Slides 13–14 (discoverability — teased here, detail there) |
 
-*Note: Read the domains fast — they're just the range. Slow down on the questions; every one came up on every server regardless of domain, and that repetition is why these projects belong in one talk. On 'How does anyone find it?': keep it short — tags and where you publish are key, and we'll dig into it on slides 13–14.*
 
 ---
 
@@ -104,7 +101,6 @@ One tool feels like the whole product. Then: one more operation, a safer default
 
 `search_tickets(status, requester_email, limit)` beats `request(path, method, query, body)`.
 
-*Note: The ticketing server — create / search / assign / comment / close are different user journeys, not HTTP verbs. Say the live tool count out loud; it keeps growing, which is the point.*
 
 ---
 
@@ -116,7 +112,6 @@ One tool feels like the whole product. Then: one more operation, a safer default
 
 > Technically precise. Operationally confusing.
 
-*Note: Anchor slide — spend ~3 min. Tool selection is a ranking problem; near-identical descriptions make it a coin flip.*
 
 ---
 
@@ -147,7 +142,6 @@ package-root: ./my-mcp
 
 Also changes when you deploy: secrets move server-side, diagnostics stop being optional, the hostname isn't stable.
 
-*Note: Runnable repro is Lab 7 (90 min). Lab 8 covers the SSE and identity half. Both linked in the footer.*
 
 ---
 
@@ -173,7 +167,6 @@ Server two made me want one library for everything. The only things that were ac
 
 **Don't copy this:** ticket search is not cloud deploy; a read is not a write; your laptop is not a public URL; work login is not a local key.
 
-*Note: this slide is how you start the next server, not how you publish it. If they ask how it leaves the laptop, jump to Appendix · Publish.*
 
 ---
 
@@ -199,7 +192,6 @@ Then the concession, because it's true and the room knows it:
 
 > The product name is the only index that reliably works — and it's the one thing I didn't build.
 
-*Note: **DEMO** — two searches. By capability ("MCP server for ticket triage") = noise. By product name = first page. That contrast is the slide. Concede it out loud — we find MCP servers via MCP marketplaces (like PulseMCP), npm, GitHub, and IDE code extensions, but what reliably works today is searching by product name.*
 
 ---
 
@@ -213,7 +205,6 @@ The honest answer, concretely:
 - The agent can't search at all. It sees its config file; nothing else exists.
 - **Nothing left to fix is in my repo** — it's in the spec, the registries, and the clients.
 
-*Note: This is the ecosystem ask. Name the three things that would close it, because all three live in someone else's codebase: (1) capability lookup as a protocol call; (2) verified publisher identity and namespacing; (3) install at runtime without hand-editing `mcp.json`. The people who can build those are in the room.*
 
 ---
 
@@ -239,7 +230,6 @@ Your server has **two readers**, and they read different artifacts.
 
 > The model never opens your README. The description field is the entire manual it gets.
 
-*Note: **Time the install before the talk** and say the real number on bullet one. The split is the point — the model only ever sees `tools/list` output, so every example and edge case it needs has to live inside the description field. Callback to the naming lesson.*
 
 ---
 
@@ -251,8 +241,6 @@ Good tools. Clear docs. Honest metadata. A place to find them.
 which permissions it wants, what it was tested against, whether anyone still maintains it.
 A `1.0.0` on an abandoned server is the same lie as a `200 OK` on a broken outcome.
 
-*Note: unpack "honest metadata" out loud — it's the only abstract word in the list, and it's the
-author-side answer to the "what discovery needs" column on slide 14. Callback to the 200 OK scar.*
 
 ---
 
@@ -273,7 +261,6 @@ Under the chips: `Markus · Research · Floor 7½ 🏢🤏`
 
 **Right column:** Sessionize feedback QR (`session-feedback-qr.png`). Leave this slide up for Q&A and ask them to scan while you take questions.
 
-*Note: the QR is how the organizers hear whether this was useful. Read both addresses out loud once — this is the slide people photograph. Then → for the three legends, how I publish, and the contact card.*
 
 ---
 
@@ -295,7 +282,6 @@ shows as `Appendix · 1 / 5`. They cost no talk time and exist for Q&A and for t
 | **CE** | Code Engine | IBM Cloud serverless containers. The "cloud containers" domain. |
 | **IAM** | Identity and Access Management | Why a missing tenant header fails every job while auth still looks "fine." |
 
-*Note: Product names stay out of the talk body — this is the cheat sheet.*
 
 ### Legend 2 — How MCP actually talks
 
@@ -321,7 +307,6 @@ Spec: [modelcontextprotocol.io/specification](https://modelcontextprotocol.io/sp
 | MCP Registry | Community index of published servers | A front door on slide 13 |
 | Open VSX | Vendor-neutral marketplace for VS Code-compatible editors | Where extensions land outside the MS marketplace |
 
-*Note: say out loud that `/health` `/test` `/admin` is your convention, not part of MCP.*
 
 ### Publish — Ship the package. Then ship the name.
 
@@ -348,8 +333,6 @@ Under the headline: `Markus · Research · Floor 7½ 🏢🤏`
 | Old friend | [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com) | Open source, and anything in this deck |
 | Portfolio | [markusvankempen.github.io](https://markusvankempen.github.io/) | Every server and extension this talk refers to |
 
-*Note: both inboxes reach me — say that out loud rather than making anyone guess which one to
-use. Floor 7½ is the Malkovich half-floor; don't explain it, just let whoever gets it get it.*
 
 ---
 
@@ -359,6 +342,5 @@ On the [live deck](https://markusvankempen.github.io/linuxfoundation-mcp-dev-sum
 
 - `←` / `→` / space — navigate
 - `G` or click the counter — jump to a slide number
-- `N` — speaker notes
 - `T` — 25-minute timer
 - `Cmd`+`P` — save as PDF
