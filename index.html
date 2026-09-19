@@ -82,6 +82,10 @@
     .slide::before { content: ''; position: absolute; width: 28vw; height: 28vw; border-radius: 50%; background: rgba(199,232,107,.28); right: -10vw; top: -13vw; }
     .slide::after { content: ''; position: absolute; width: 16vw; height: 16vw; border-radius: 50%; background: rgba(240,127,97,.16); left: -8vw; bottom: -8vw; }
     .content { max-width: 1160px; width: 100%; margin: auto; position: relative; z-index: 1; }
+    /* Tall appendix tables overflow a vertically-centered flex item and
+       look blank (#18+). Pin them to the top under the logo. */
+    .slide[data-appendix="true"].active { justify-content: flex-start; }
+    .slide[data-appendix="true"] .content { margin: 84px auto 28px; }
     .eyebrow { color: var(--green); font: 500 13px var(--code); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 22px; }
     h1, h2, h3, p { margin-top: 0; }
     h1 { font-size: clamp(40px, 6.4vw, 86px); line-height: .98; letter-spacing: -.03em; max-width: 900px; margin-bottom: 26px; }
@@ -262,6 +266,8 @@
       .progress, .controls, .jump-dialog, .footer, .timer, .summit-logo { display: none !important; }
       .print-footer { display: flex; }
       .print-logo { display: block; }
+      .slide[data-appendix="true"] .content { margin: 0 auto; }
+      .slide[data-appendix="true"] .content { margin: 0 auto; }
       .panel, .mode-table, .qr-card { box-shadow: none; }
 
       /* Fixed 16:9 type scale. clamp()/vw follow the 720px print viewport
