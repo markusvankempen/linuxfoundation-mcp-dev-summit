@@ -1,2 +1,5 @@
 .DS_Store
 node_modules/
+# Keep the public hub as a splash until the day before the session.
+slides/*.pdf
+slides/outline.md
