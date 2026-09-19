@@ -1,37 +1,59 @@
-# MCP as a Platform
-## What I Learned Building a Portfolio of MCP Servers
+# LinuxFoundation MCP Dev Summit
 
-Markus van Kempen
-Executive Architect & Venture Capitalist in Residence, IBM
-MCP Dev Summit Toronto | 25 minutes
+**MCP as a Platform: What I Learned Building a Portfolio of MCP Servers**
 
-**Contact** — [mvankempen@ca.ibm.com](mailto:mvankempen@ca.ibm.com) ·
+Markus van Kempen · MCP Dev Summit Toronto · Linux Foundation  
+Monday 5 October 2026 · 12:00–12:25 EDT · Terrace East + West
+
+[![Session banner](assets/banner.jpeg)](https://events.linuxfoundation.org/mcp-dev-summit-toronto/program/schedule/?id=1282401)
+
+[**Open the live deck**](https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/) ·
+[Download the PDF](slides/linuxfoundation-mcp-dev-summit.pdf) ·
+[Session page](https://events.linuxfoundation.org/mcp-dev-summit-toronto/program/schedule/?id=1282401)
+
+Personal open-source talk materials. **Not an IBM product. Not an official Linux Foundation repository.**
+
+---
+
+## Clone tonight
+
+| What | Link |
+|---|---|
+| **Demo repo** — everything in one place | [github.com/markusvankempen/mcp-ticket-demo](https://github.com/markusvankempen/mcp-ticket-demo) |
+| **MCP server** | [mcp-ticket-demo/server](https://github.com/markusvankempen/mcp-ticket-demo/tree/main/server) |
+| **VS Code / Cursor / Bob extension** | [mcp-ticket-demo/extension](https://github.com/markusvankempen/mcp-ticket-demo/tree/main/extension) |
+
+```bash
+git clone https://github.com/markusvankempen/mcp-ticket-demo
+cd mcp-ticket-demo/server
+npm install
+npm run http
+```
+
+Then open `http://127.0.0.1:8787/health`, `/test`, and `/admin` (login `demo` / `demo`). Node 18+.
+
+| # | What to do | What you should see |
+|---|---|---|
+| 1 Attribution | Call `create_ticket` with no `requester_email` | `201`. Ticket owned by the bot. |
+| 2 Workbench | Import → Diagnose → Test in the extension | First red step is the problem. |
+| 3 Auth | On `/admin`, set `write`, call `create_ticket` twice | Refusal names the scope; a key works. |
+| 4 Findability | Search *MCP server for ticket triage*, then *Zendesk MCP* | Capability = noise. Product name = first page. |
+
+Optional fifth: `list_schemas`, then `get_schema`, then `run_query`.
+
+---
+
+## Contact
+
+[mvankempen@ca.ibm.com](mailto:mvankempen@ca.ibm.com) ·
 [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com) ·
 [markusvankempen.github.io](https://markusvankempen.github.io/)
 
-> **Where the real title goes, and where the joke goes.** Slide 1 carries the accepted session
-> title verbatim — the words in the Sessionize program and on the schedule board — plus the badge
-> title, because that is the slide where the room decides whether I have actually built this stuff.
-> The hook ("one server teaches you the protocol…") is the subtitle underneath, not the headline.
-> The `Markus · Research · Floor 7½ 🏢🤏` line runs on the closing slide and the contact card,
-> where the laugh lands and nobody is calibrating credibility any more.
-
-> Outline mirrors `talk-02-mcp-as-a-platform-portfolio-slides.html`
-> (17 talk slides + 5 appendix slides: three legends, how I publish, and a contact card).
-> If you change one, change the other.
->
-> `talk-02-mcp-as-a-platform-portfolio-slides.pdf` is the exported handout —
-> one slide per landscape page. Regenerate it with **File → Print → Save as PDF**
-> (the deck ships a print stylesheet), or re-run the export script.
-
-**Naming rule for this deck:** slide bodies describe systems **by domain**, never by product
-name. The concrete open-source reference lives in the **footer as a link**, one or two per slide.
-
-**No hard counts on slides.** Server and tool counts keep moving, so the deck says "a handful",
-"dozens", "a couple". Say the live number out loud if you want it — don't bake it into a slide.
-The only literal count left is `0 tools discovered` on slide 9, which is the bug message.
+_No bug too small, no syntax too weird._
 
 ---
+
+# Talk outline
 
 ## Slide 1 — MCP as a Platform
 
@@ -141,9 +163,11 @@ Also changes when you deploy: secrets move server-side, diagnostics stop being o
 | A vendor error code, not a 404 | Wrong API base URL fails silently | Pin host, assert on startup |
 | Auth fine, jobs fail | Missing a required tenant header | Validate headers before first call |
 | `mcp.json` stopped working | Platform assigned a new hostname | Resolve endpoint after deploy |
+| Four copies of `mcp.json` | Same server configured in four IDEs, slightly different schemas | One source of truth; let the extension write the client file |
 | Model picked wrong tool | A pile of near-identical `query_*` | One query tool + schema discovery |
+| Client hung, or a JSON parse error | `console.log("connected")` wrote into the stdio stream | Log diagnostics to `stderr` — `console.error` |
 
-Four of five failed **silently**.
+Most of these failed **silently**.
 
 ---
 
@@ -252,11 +276,11 @@ Under the chips: `Markus · Research · Floor 7½ 🏢🤏`
 
 ---
 
-## Appendix — Backup slides (5 slides, after the close)
+## Appendix — Backup slides (10 slides, after the close)
 
 These sit after "Questions?" and are **excluded from the slide counter and progress bar**
 (`data-appendix="true"`). The deck still reads `17 / 17` on the closing slide; the appendix
-shows as `Appendix · 1 / 5`. They cost no talk time and exist for Q&A and for the shared file.
+shows as `Appendix · 1 / 10`. They cost no talk time and exist for Q&A and for the shared file.
 
 ### Legend 1 — The acronyms
 
@@ -296,6 +320,41 @@ Spec: [modelcontextprotocol.io/specification](https://modelcontextprotocol.io/sp
 | Open VSX | Vendor-neutral marketplace for VS Code-compatible editors | Where extensions land outside the MS marketplace |
 
 
+### Legend 4 — The short words
+
+| Term | Stands for | Why it's in this talk |
+|---|---|---|
+| `cwd` | current working directory | The folder the process starts in. Slide 9: set it to the package you shipped. |
+| env | environment variables | How a local stdio server gets secrets. |
+| npm | Node Package Manager | Where the code is hosted. Publish here first. |
+| `.vsix` | Visual Studio extension package | The file you upload to Open VSX. |
+| PII | Personally Identifiable Information | A scope in the demo. Locked once `auth_mode` is `write` or `all`. |
+| CI | Continuous Integration | Why a remote URL matters. |
+| IDE | Integrated Development Environment | Four copies of `mcp.json` on slide 10. |
+| HTTPS | HTTP over TLS (port 443) | What a shared remote server should speak. |
+
+### Try it tonight — Clone the repo. Run it in about ten minutes.
+
+```bash
+git clone https://github.com/markusvankempen/mcp-ticket-demo
+cd mcp-ticket-demo/server
+npm install
+npm run http
+```
+
+Then open `/health`, `/test`, and `/admin` on `http://127.0.0.1:8787`. Login `demo` / `demo`. Node 18+.
+
+### Try these four — Same lessons. Now you can reproduce them.
+
+| # | What to do | What you should see |
+|---|---|---|
+| 1 Attribution | `create_ticket` with no `requester_email` | 201. Ticket owned by the bot. |
+| 2 Workbench | Import → Diagnose → Test | First red step is the problem. |
+| 3 Auth | `/admin` → `write` → call `create_ticket` twice | Refusal names the scope; key works. |
+| 4 Findability | Two browser searches | Capability = noise. Product name = first page. |
+
+Optional fifth: `list_schemas` / `get_schema` / `run_query`. Full steps: the [demo repo README](https://github.com/markusvankempen/mcp-ticket-demo).
+
 ### Publish — Ship the package. Then ship the name.
 
 The registry does not host your code. npm does. Publish npm first, or the name publish fails.
@@ -307,7 +366,28 @@ The registry does not host your code. npm does. Publish npm first, or the name p
 
 If it has an extension: package the `.vsix` and upload it to Open VSX. The registry name must start with `io.github.youruser/`.
 
-Full checklist: `internal/PUBLISHING.md`.
+Full checklist: the [demo repo README](https://github.com/markusvankempen/mcp-ticket-demo).
+
+### Deploy — From the laptop to a shared URL
+
+Publish puts a name on the registry. This is how the same server becomes a URL your team can call.
+
+1. **Laptop** — `npx` or stdio. Fast feedback. Credentials stay on your machine.
+2. **Container** — same package, relative path. A `Dockerfile` so a cloud runner is not looking at `/Users/me/…`.
+3. **Shared URL** — HTTPS, server-side secrets, `/health` `/test` `/admin`. Read the hostname after deploy.
+
+
+### Auth — Three modes. Discovery stays open.
+
+None of this is in the spec. Flip the mode on `/admin`, then call the same write tool twice.
+
+| Mode | What it does |
+|---|---|
+| **off** | Laptop default. Anyone can call anything. Do not put this on a public URL. |
+| **write** | Reads stay open. Create, comment, close, and PII need a key with the right scope. |
+| **all** | Public URL. Every tool call needs a credential. The refusal names the scope and where to get one. |
+
+A locked tool still shows up in `tools/list`. The refusal is the only place left to explain yourself.
 
 ### Contact
 
@@ -324,54 +404,13 @@ Under the headline: `Markus · Research · Floor 7½ 🏢🤏`
 
 ---
 
-## Footer reference map
-
-Each slide keeps its body generic and carries the concrete link in the footer.
-
-| Slide | Footer reference |
-|---|---|
-| 1–4, 8, 11, 12, 15, 16 | [markusvankempen.github.io](https://markusvankempen.github.io/) |
-| 5, 7 | [github.com/markusvankempen/zendesk-mcp](https://github.com/markusvankempen/zendesk-mcp) |
-| 6 | [maximo-mcp-ai-integration-options](https://github.com/markusvankempen/maximo-mcp-ai-integration-options) |
-| 9 | [wxo-labs Lab 7 — MCP Basics](https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#lab-7-mcp-basics---your-first-mcp-server) + [Lab 8 — MCP Advanced](https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#lab-8-mcp-advanced---user-context--credentials) |
-| 10 | portfolio + [wxo-labs troubleshooting guide](https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#troubleshooting-guide) |
-| 13, 14 | [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io/) |
-| 17 | portfolio + [wxo-labs](https://markusvankempen.github.io/wxo-labs/) |
-| Appendix · Publish | [npmjs.com/package/mcp-ticket-demo](https://www.npmjs.com/package/mcp-ticket-demo) + [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io/) |
-| Appendix · Contact | [markusvankempen.github.io](https://markusvankempen.github.io/) |
-
-To add or change a reference, edit `data-ref` / `data-ref-url` (and optionally
-`data-ref2` / `data-ref2-url`) on the `<section class="slide">` element. The footer
-renders them automatically.
-
 ---
-
-## Timing Guide
-
-| Slides | Topic | Time |
-|---|---|---:|
-| 1–3 | Hook, portfolio, architecture | 3 min |
-| 4–7 | Tool design + two real scars | 7 min |
-| 8–10 | DX, local vs remote, failure table | 5 min |
-| 11–12 | Reuse and documentation | 3 min |
-| 13–14 | Discoverability (+ demo) | 4 min |
-| 15–17 | Checklist, opportunity, close | 3 min |
-
-Total: 25 minutes
-
-## Demo
-
-**One demo only:** slide 13 — search for one of your own servers in a clean browser without using your name. If it fails, the chip list on the slide makes the same point.
-
-Everything else stays as screenshots.
 
 ## Deck controls
 
+On the [live deck](https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/):
+
 - `←` / `→` / space — navigate
 - `G` or click the counter — jump to a slide number
-- `T` — 25-minute elapsed timer (turns coral when over)
-- `Cmd`+`P` — one 16:9 page per slide, footers included; save as PDF for the handout
-
-## Backup slides
-
-Appendix material lives in the repos: WxO labs and field guide, Quantum API research, Code Engine deployment guide, asset-management API explorer, ETL extension MCP wizard.
+- `T` — 25-minute timer
+- `Cmd`+`P` — save as PDF

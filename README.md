@@ -25,11 +25,21 @@ Personal open-source talk materials. **Not an IBM product. Not an official Linux
 
 ```bash
 git clone https://github.com/markusvankempen/mcp-ticket-demo
-cd mcp-ticket-demo/server && npm install
-npx mcp-ticket-demo
+cd mcp-ticket-demo/server
+npm install
+npm run http
 ```
 
-npm: `npx mcp-ticket-demo` · extension name in the editor: **LF MCP Demo**
+Then open `http://127.0.0.1:8787/health`, `/test`, and `/admin` (login `demo` / `demo`). Node 18+.
+
+| # | What to do | What you should see |
+|---|---|---|
+| 1 Attribution | Call `create_ticket` with no `requester_email` | `201`. Ticket owned by the bot. |
+| 2 Workbench | Import → Diagnose → Test in the extension | First red step is the problem. |
+| 3 Auth | On `/admin`, set `write`, call `create_ticket` twice | Refusal names the scope; a key works. |
+| 4 Findability | Search *MCP server for ticket triage*, then *Zendesk MCP* | Capability = noise. Product name = first page. |
+
+Optional fifth: `list_schemas`, then `get_schema`, then `run_query`.
 
 ---
 
@@ -153,9 +163,11 @@ Also changes when you deploy: secrets move server-side, diagnostics stop being o
 | A vendor error code, not a 404 | Wrong API base URL fails silently | Pin host, assert on startup |
 | Auth fine, jobs fail | Missing a required tenant header | Validate headers before first call |
 | `mcp.json` stopped working | Platform assigned a new hostname | Resolve endpoint after deploy |
+| Four copies of `mcp.json` | Same server configured in four IDEs, slightly different schemas | One source of truth; let the extension write the client file |
 | Model picked wrong tool | A pile of near-identical `query_*` | One query tool + schema discovery |
+| Client hung, or a JSON parse error | `console.log("connected")` wrote into the stdio stream | Log diagnostics to `stderr` — `console.error` |
 
-Four of five failed **silently**.
+Most of these failed **silently**.
 
 ---
 
@@ -264,11 +276,11 @@ Under the chips: `Markus · Research · Floor 7½ 🏢🤏`
 
 ---
 
-## Appendix — Backup slides (5 slides, after the close)
+## Appendix — Backup slides (10 slides, after the close)
 
 These sit after "Questions?" and are **excluded from the slide counter and progress bar**
 (`data-appendix="true"`). The deck still reads `17 / 17` on the closing slide; the appendix
-shows as `Appendix · 1 / 5`. They cost no talk time and exist for Q&A and for the shared file.
+shows as `Appendix · 1 / 10`. They cost no talk time and exist for Q&A and for the shared file.
 
 ### Legend 1 — The acronyms
 
@@ -308,6 +320,41 @@ Spec: [modelcontextprotocol.io/specification](https://modelcontextprotocol.io/sp
 | Open VSX | Vendor-neutral marketplace for VS Code-compatible editors | Where extensions land outside the MS marketplace |
 
 
+### Legend 4 — The short words
+
+| Term | Stands for | Why it's in this talk |
+|---|---|---|
+| `cwd` | current working directory | The folder the process starts in. Slide 9: set it to the package you shipped. |
+| env | environment variables | How a local stdio server gets secrets. |
+| npm | Node Package Manager | Where the code is hosted. Publish here first. |
+| `.vsix` | Visual Studio extension package | The file you upload to Open VSX. |
+| PII | Personally Identifiable Information | A scope in the demo. Locked once `auth_mode` is `write` or `all`. |
+| CI | Continuous Integration | Why a remote URL matters. |
+| IDE | Integrated Development Environment | Four copies of `mcp.json` on slide 10. |
+| HTTPS | HTTP over TLS (port 443) | What a shared remote server should speak. |
+
+### Try it tonight — Clone the repo. Run it in about ten minutes.
+
+```bash
+git clone https://github.com/markusvankempen/mcp-ticket-demo
+cd mcp-ticket-demo/server
+npm install
+npm run http
+```
+
+Then open `/health`, `/test`, and `/admin` on `http://127.0.0.1:8787`. Login `demo` / `demo`. Node 18+.
+
+### Try these four — Same lessons. Now you can reproduce them.
+
+| # | What to do | What you should see |
+|---|---|---|
+| 1 Attribution | `create_ticket` with no `requester_email` | 201. Ticket owned by the bot. |
+| 2 Workbench | Import → Diagnose → Test | First red step is the problem. |
+| 3 Auth | `/admin` → `write` → call `create_ticket` twice | Refusal names the scope; key works. |
+| 4 Findability | Two browser searches | Capability = noise. Product name = first page. |
+
+Optional fifth: `list_schemas` / `get_schema` / `run_query`. Full steps: the [demo repo README](https://github.com/markusvankempen/mcp-ticket-demo).
+
 ### Publish — Ship the package. Then ship the name.
 
 The registry does not host your code. npm does. Publish npm first, or the name publish fails.
@@ -319,7 +366,28 @@ The registry does not host your code. npm does. Publish npm first, or the name p
 
 If it has an extension: package the `.vsix` and upload it to Open VSX. The registry name must start with `io.github.youruser/`.
 
-Full checklist: `internal/PUBLISHING.md`.
+Full checklist: the [demo repo README](https://github.com/markusvankempen/mcp-ticket-demo).
+
+### Deploy — From the laptop to a shared URL
+
+Publish puts a name on the registry. This is how the same server becomes a URL your team can call.
+
+1. **Laptop** — `npx` or stdio. Fast feedback. Credentials stay on your machine.
+2. **Container** — same package, relative path. A `Dockerfile` so a cloud runner is not looking at `/Users/me/…`.
+3. **Shared URL** — HTTPS, server-side secrets, `/health` `/test` `/admin`. Read the hostname after deploy.
+
+
+### Auth — Three modes. Discovery stays open.
+
+None of this is in the spec. Flip the mode on `/admin`, then call the same write tool twice.
+
+| Mode | What it does |
+|---|---|
+| **off** | Laptop default. Anyone can call anything. Do not put this on a public URL. |
+| **write** | Reads stay open. Create, comment, close, and PII need a key with the right scope. |
+| **all** | Public URL. Every tool call needs a credential. The refusal names the scope and where to get one. |
+
+A locked tool still shows up in `tools/list`. The refusal is the only place left to explain yourself.
 
 ### Contact
 
@@ -333,6 +401,8 @@ Under the headline: `Markus · Research · Floor 7½ 🏢🤏`
 | Old friend | [markus.van.kempen@gmail.com](mailto:markus.van.kempen@gmail.com) | Open source, and anything in this deck |
 | Portfolio | [markusvankempen.github.io](https://markusvankempen.github.io/) | Every server and extension this talk refers to |
 
+
+---
 
 ---
 

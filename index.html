@@ -125,6 +125,7 @@
     .mode-table th, .mode-table td { padding: 14px 16px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; line-height: 1.5; }
     .mode-table th { background: var(--green-dark); color: white; font-weight: 600; }
     .mode-table tr:last-child td { border-bottom: 0; }
+    .mode-table.dense th, .mode-table.dense td { padding: 10px 14px; }
     .numbered { counter-reset: item; list-style: none; padding: 0; display: grid; gap: 12px; }
     .numbered li { counter-increment: item; display: flex; align-items: baseline; gap: 15px; }
     .numbered li::before { content: counter(item, decimal-leading-zero); color: var(--coral); font: 500 14px var(--code); }
@@ -154,6 +155,20 @@
     .footer .sep { flex: none; color: var(--line); }
     .footer a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(13,122,99,.35); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .footer a:hover { border-bottom-color: var(--green); }
+
+    .summit-logo {
+      position: fixed; z-index: 6; top: 20px; right: 28px;
+      height: 68px; width: auto; border-radius: 8px;
+      background: #000; padding: 8px 12px;
+      border: 1px solid rgba(0, 178, 210, .45);
+      box-shadow: 0 10px 28px rgba(16,37,42,.18);
+    }
+    .print-logo {
+      display: none; position: absolute; z-index: 3;
+      top: .26in; right: .55in; height: .58in; width: auto; border-radius: 6px;
+      background: #000; padding: .08in .12in;
+      border: 1px solid rgba(0, 178, 210, .45);
+    }
 
     .controls { position: fixed; z-index: 5; right: 28px; bottom: 22px; display: flex; gap: 8px; align-items: center; }
     .controls button { border: 1px solid var(--line); background: rgba(251,252,248,.9); color: var(--ink); border-radius: 8px; min-width: 42px; height: 38px; padding: 0 10px; cursor: pointer; }
@@ -206,6 +221,7 @@
       .node { padding: 14px 12px; }
       .mode-table { font-size: 14px; }
       .mode-table th, .mode-table td { padding: 8px 12px; line-height: 1.4; }
+      .mode-table.dense th, .mode-table.dense td { padding: 6px 10px; }
       .quote strong { font-size: clamp(20px, 2.6vw, 30px); }
       .close-split { gap: 20px; grid-template-columns: minmax(0, 1fr) minmax(180px, 240px); }
       .qr-card { padding: 10px; }
@@ -243,8 +259,9 @@
         break-after: page; page-break-after: always; break-inside: avoid;
       }
       .slide:last-of-type { break-after: auto; page-break-after: auto; }
-      .progress, .controls, .jump-dialog, .footer, .timer { display: none !important; }
+      .progress, .controls, .jump-dialog, .footer, .timer, .summit-logo { display: none !important; }
       .print-footer { display: flex; }
+      .print-logo { display: block; }
       .panel, .mode-table, .qr-card { box-shadow: none; }
 
       /* Fixed 16:9 type scale. clamp()/vw follow the 720px print viewport
@@ -265,6 +282,8 @@
       .mono { font-size: 15px; padding: 16px 18px; }
       .mode-table { font-size: 15px; }
       .mode-table th, .mode-table td { padding: 8px 12px; line-height: 1.35; }
+      .mode-table.dense { font-size: 14px; }
+      .mode-table.dense th, .mode-table.dense td { padding: 6px 10px; }
       .quote strong { font-size: 28px; }
       .source { font-size: 13px; margin-top: 16px; }
       .contact a { font-size: 13px; padding: 8px 13px; }
@@ -279,6 +298,7 @@
 </head>
 <body>
   <div class="deck">
+    <img class="summit-logo" src="MCPSummitlogo.png" alt="MCP Dev Summit Toronto" width="280" height="68">
     <div class="progress" id="progress"></div>
 
     <!-- 01 -->
@@ -443,7 +463,7 @@ Selection stopped being a coin flip.</span></div>
           <div class="panel bad"><span class="tag warn">BROKE</span><h3>Wrong owner</h3><p>The requester was my API service account, so the platform mailed every reply to the bot — not the customer.</p></div>
           <div class="panel"><span class="tag">FIXED</span><h3>Requester attribution</h3><p>Create on behalf of the real customer, so the whole downstream email thread routes correctly.</p></div>
         </div>
-        <p class="small" style="margin-top:18px">Try it: call <code>create_ticket</code> in <code>mcp-ticket-demo</code> without <code>requester_email</code>, then look at who owns the ticket.</p>
+        <p class="small" style="margin-top:18px">Try it tonight: clone <code>mcp-ticket-demo</code>, call <code>create_ticket</code> without <code>requester_email</code>, then look at who owns the ticket. Steps are in the appendix.</p>
         <div class="quote" style="margin-top:24px"><strong>A tool isn't done when the API call succeeds.<br>It's done when the next thing that happens is right.</strong></div>
       </div>
     </section>
@@ -512,13 +532,14 @@ Different <span class="hl">execution context</span>.</div>
       <div class="content">
         <div class="eyebrow">Lesson 04 · The messy parts</div>
         <h2>The failures that<br><span class="accent">taught me the most.</span></h2>
-        <table class="mode-table">
+        <table class="mode-table dense">
           <thead><tr><th>What I saw</th><th>What was actually wrong</th><th>What I changed</th></tr></thead>
           <tbody>
             <tr><td><strong>0 tools discovered</strong></td><td>I gave a cloud runner a path from my laptop</td><td>Ship the package, run from a relative path</td></tr>
             <tr><td><strong>A strange vendor error, never a 404</strong></td><td>Wrong API host — the bad hostname answered with something else entirely</td><td>Pin the confirmed host and assert it at startup</td></tr>
             <tr><td><strong>Auth looked fine, every call failed</strong></td><td>A required tenant header was missing</td><td>Check required headers before the first call, not after</td></tr>
             <tr><td><strong>mcp.json worked yesterday</strong></td><td>Redeploying gave the service a new hostname</td><td>Read the endpoint after deploy; never paste a URL by hand</td></tr>
+            <tr><td><strong>Four copies of mcp.json</strong></td><td>The same server configured in four IDEs, each with a slightly different schema</td><td>One source of truth; let the extension write the client file</td></tr>
             <tr><td><strong>The model picked the wrong tool</strong></td><td>Seven near-identical <code>query_*</code> names</td><td>One query tool plus schema discovery</td></tr>
             <tr><td><strong>Client hung, or a JSON parse error</strong></td><td><code>console.log("connected")</code> wrote into the stdio stream</td><td>Log diagnostics to <code>stderr</code> — <code>console.error</code></td></tr>
           </tbody>
@@ -648,7 +669,7 @@ on /admin → API keys.
       data-ref="github.com/markusvankempen/mcp-ticket-demo"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
       data-ref2="markusvankempen.github.io"
-      data-ref2-url="https://markusvankempen.github.io/">
+      data-ref2-url="https://markusvankempen.github.io/"
       <div class="content">
         <div class="close-split">
           <div>
@@ -663,7 +684,7 @@ on /admin → API keys.
               <a href="https://markusvankempen.github.io/">markusvankempen.github.io</a>
             </div>
             <p class="whereabouts">Markus <span class="rank">· Research · Floor 7½</span> <span class="emoji">🏢🤏</span></p>
-            <p class="small" style="margin-top:12px">Backup slides follow — press → for acronyms, transports, packaging, and how I publish the next server.</p>
+            <p class="small" style="margin-top:12px">Backup slides follow — press → for acronyms, how to run the demo tonight, publish, deploy, and auth.</p>
           </div>
           <aside class="qr-card">
             <img src="session-feedback-qr.png" alt="Sessionize QR code for session feedback">
@@ -680,7 +701,7 @@ on /admin → API keys.
       data-ref2="IBM Cloud · Cloud Resource Names"
       data-ref2-url="https://cloud.ibm.com/docs/account?topic=account-crn">
       <div class="content">
-        <div class="eyebrow">Appendix · Legend 1 / 3</div>
+        <div class="eyebrow">Appendix · Legend 1 / 4</div>
         <h2>The acronyms.<br><span class="accent">What they actually mean.</span></h2>
         <table class="mode-table">
           <thead><tr><th>Term</th><th>Stands for</th><th>Why it shows up in this talk</th></tr></thead>
@@ -704,7 +725,7 @@ on /admin → API keys.
       data-ref2="docs/concepts/transports"
       data-ref2-url="https://modelcontextprotocol.io/docs/concepts/transports">
       <div class="content">
-        <div class="eyebrow">Appendix · Legend 2 / 3</div>
+        <div class="eyebrow">Appendix · Legend 2 / 4</div>
         <h2>How MCP<br><span class="accent">actually talks.</span></h2>
         <table class="mode-table">
           <thead><tr><th>Term</th><th>What it is</th><th>Where it runs</th></tr></thead>
@@ -727,7 +748,7 @@ on /admin → API keys.
       data-ref2="markusvankempen.github.io"
       data-ref2-url="https://markusvankempen.github.io/">
       <div class="content">
-        <div class="eyebrow">Appendix · Legend 3 / 3</div>
+        <div class="eyebrow">Appendix · Legend 3 / 4</div>
         <h2>Packaging,<br><span class="accent">config and distribution.</span></h2>
         <table class="mode-table">
           <thead><tr><th>Term</th><th>What it is</th><th>Why it shows up in this talk</th></tr></thead>
@@ -744,7 +765,30 @@ on /admin → API keys.
       </div>
     </section>
 
-    <!-- A4 — how the next server leaves the laptop -->
+    <!-- A4 — short words that show up on the slides -->
+    <section class="slide" data-appendix="true"
+      data-ref="github.com/markusvankempen/mcp-ticket-demo"
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
+      <div class="content">
+        <div class="eyebrow">Appendix · Legend 4 / 4</div>
+        <h2>The short words.<br><span class="accent">cwd, env, PII, and the rest.</span></h2>
+        <table class="mode-table dense">
+          <thead><tr><th>Term</th><th>Stands for</th><th>Why it shows up in this talk</th></tr></thead>
+          <tbody>
+            <tr><td><strong><code>cwd</code></strong></td><td>current working directory</td><td>The folder the process starts in. Slide 9: set it to the package you shipped, not a path from your laptop.</td></tr>
+            <tr><td><strong>env</strong></td><td>environment variables</td><td>How a local stdio server gets secrets. Same checks belong on every server — slide 12.</td></tr>
+            <tr><td><strong>npm</strong></td><td>Node Package Manager</td><td>Where the code is hosted. Publish here first, then the registry name.</td></tr>
+            <tr><td><strong><code>.vsix</code></strong></td><td>Visual Studio extension package</td><td>The file you upload to Open VSX. Not the registry, not npm.</td></tr>
+            <tr><td><strong>PII</strong></td><td>Personally Identifiable Information</td><td>A scope in the demo. Emails and names need a key once <code>auth_mode</code> is <code>write</code> or <code>all</code>.</td></tr>
+            <tr><td><strong>CI</strong></td><td>Continuous Integration</td><td>Why a remote URL matters: a pipeline cannot use your laptop's stdio path.</td></tr>
+            <tr><td><strong>IDE</strong></td><td>Integrated Development Environment</td><td>VS Code, Cursor, Windsurf, Bob — four copies of <code>mcp.json</code> on slide 10.</td></tr>
+            <tr><td><strong>HTTPS</strong></td><td>HTTP over TLS (port 443)</td><td>What a shared remote server should speak. The hostname is not something you paste by hand.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- A5 — how the next server leaves the laptop -->
     <section class="slide" data-appendix="true"
       data-ref="npmjs.com/package/mcp-ticket-demo"
       data-ref-url="https://www.npmjs.com/package/mcp-ticket-demo"
@@ -764,7 +808,84 @@ on /admin → API keys.
       </div>
     </section>
 
-    <!-- A5 — contact card, appendix so the talk still reads 17 / 17 -->
+    <!-- A5 — host for the team; Publish is the name, this is the URL -->
+    <section class="slide" data-appendix="true"
+      data-ref="github.com/markusvankempen/mcp-ticket-demo"
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
+      data-ref2="wxo-labs · Lab 8 — MCP Advanced"
+      data-ref2-url="https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#lab-8-mcp-advanced---user-context--credentials">
+      <div class="content">
+        <div class="eyebrow">Appendix · Deploy</div>
+        <h2>From the laptop<br><span class="accent">to a shared URL.</span></h2>
+        <p class="lede">Publish puts a name on the registry. This is how the same server becomes a URL your team can call.</p>
+        <div class="grid three" style="margin-top:18px">
+          <div class="panel"><span class="tag">01</span><h3>Laptop</h3><p><code>npx</code> or stdio. Fast feedback. Credentials stay on your machine. No port, no URL.</p></div>
+          <div class="panel"><span class="tag">02</span><h3>Container</h3><p>Same package, relative path. A <code>Dockerfile</code> so a cloud runner is not looking at <code>/Users/me/…</code>.</p></div>
+          <div class="panel"><span class="tag">03</span><h3>Shared URL</h3><p>HTTPS, server-side secrets, <code>/health</code> <code>/test</code> <code>/admin</code>. Read the hostname after deploy — never paste it by hand.</p></div>
+        </div>
+        <div class="quote" style="margin-top:22px"><strong>The package is what you ship.<br>The URL is what you look up after it lands.</strong></div>
+      </div>
+    </section>
+
+    <!-- A6 — the three auth modes behind slide 11 -->
+    <section class="slide" data-appendix="true"
+      data-ref="mcp-ticket-demo — auth modes, scopes, API keys"
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
+      <div class="content">
+        <div class="eyebrow">Appendix · Auth</div>
+        <h2>Three modes.<br><span class="accent">Discovery stays open in all of them.</span></h2>
+        <p class="lede">None of this is in the spec. Flip the mode on <code>/admin</code>, then call the same write tool twice.</p>
+        <div class="grid three" style="margin-top:18px">
+          <div class="panel"><span class="tag">off</span><h3>Laptop default</h3><p>Anyone can call anything. Fine on your machine. Do not put this on a public URL.</p></div>
+          <div class="panel"><span class="tag">write</span><h3>Reads stay open</h3><p>Search is free. Create, comment, close, and PII need a key with the right scope.</p></div>
+          <div class="panel"><span class="tag warn">all</span><h3>Public URL</h3><p>Every tool call needs a credential. The refusal names the scope and where to get one.</p></div>
+        </div>
+        <div class="quote" style="margin-top:22px"><strong>A locked tool still shows up in <code>tools/list</code>.<br>The refusal is the only place left to explain yourself.</strong></div>
+      </div>
+    </section>
+
+    <!-- A8 — attendee setup for the submitted PDF -->
+    <section class="slide" data-appendix="true"
+      data-ref="github.com/markusvankempen/mcp-ticket-demo"
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
+      <div class="content">
+        <div class="eyebrow">Appendix · Try it tonight</div>
+        <h2>Clone the repo.<br><span class="accent">Run it in about ten minutes.</span></h2>
+        <p class="lede">Every example in this talk is in <strong>MCP Demo</strong>. Personal open source — not an IBM product. You need Node 18+.</p>
+        <div class="mono" style="margin-top:16px">git clone https://github.com/markusvankempen/mcp-ticket-demo
+cd mcp-ticket-demo/server
+npm install
+npm run http</div>
+        <div class="grid three" style="margin-top:18px">
+          <div class="panel"><h3>Is it alive?</h3><p>Open <code>http://127.0.0.1:8787/health</code></p></div>
+          <div class="panel"><h3>Does it work?</h3><p>Open <code>http://127.0.0.1:8787/test</code> — it creates and finds a ticket.</p></div>
+          <div class="panel"><h3>Can you operate it?</h3><p>Open <code>http://127.0.0.1:8787/admin</code> — login <code>demo</code> / <code>demo</code>.</p></div>
+        </div>
+        <p class="small" style="margin-top:16px">Editor path: in another terminal, <code>npm run stdio</code> from <code>server/</code>. Load the extension from <code>extension/</code>. Next slide is four things to try.</p>
+      </div>
+    </section>
+
+    <!-- A9 — four attendee exercises -->
+    <section class="slide" data-appendix="true"
+      data-ref="github.com/markusvankempen/mcp-ticket-demo"
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
+      <div class="content">
+        <div class="eyebrow">Appendix · Try these four</div>
+        <h2>Same lessons.<br><span class="accent">Now you can reproduce them.</span></h2>
+        <table class="mode-table dense">
+          <thead><tr><th>#</th><th>What to do</th><th>What you should see</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1 · Attribution</strong></td><td>From the editor, or Chat against the server, call <code>create_ticket</code> with a subject and body only. <strong>Leave <code>requester_email</code> out.</strong> Then open the ticket.</td><td><code>201 Created</code>. The requester is the API service account, not a customer. Call it again with an email — the owner changes.</td></tr>
+            <tr><td><strong>2 · Workbench</strong></td><td>Load the extension in <code>extension/</code>. <strong>Import</strong> the <code>mcp.json</code> already in the workspace. <strong>Diagnose</strong> in order. <strong>Test</strong> <code>search_tickets</code> with a real query.</td><td>Each step pass or fail. The first red step is the actual problem — you do not retype config.</td></tr>
+            <tr><td><strong>3 · Auth</strong></td><td>On <code>/admin</code>, set mode to <code>write</code>. Call <code>create_ticket</code> with no key. Issue a key with the <code>write</code> scope. Call it again.</td><td>First call refuses and names the scope. Second call works. The tool never disappeared from <code>tools/list</code>.</td></tr>
+            <tr><td><strong>4 · Findability</strong></td><td>In a clean browser, search <em>MCP server for ticket triage</em>. Then search <em>Zendesk MCP</em>. No server required.</td><td>Capability search is noise. Product-name search is first page.</td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:14px">Optional fifth: call <code>list_schemas</code>, then <code>get_schema</code>, then <code>run_query</code> — three tools instead of a pile of <code>query_*</code>. Full walkthrough: the README in the repo.</p>
+      </div>
+    </section>
+
+    <!-- A9 — contact card, appendix so the talk still reads 17 / 17 -->
     <section class="slide" data-appendix="true"
       data-ref="markusvankempen.github.io"
       data-ref-url="https://markusvankempen.github.io/">
@@ -855,6 +976,17 @@ on /admin → API keys.
 
       // Printing puts every slide on its own page, so each one needs a static
       // footer of its own rather than the single live one.
+      function buildPrintLogos() {
+        slides.forEach((slide) => {
+          slide.querySelectorAll('.print-logo').forEach((el) => el.remove());
+          const logo = document.createElement('img');
+          logo.className = 'print-logo';
+          logo.src = 'MCPSummitlogo.png';
+          logo.alt = 'MCP Dev Summit Toronto';
+          slide.appendChild(logo);
+        });
+      }
+
       function buildPrintFooters() {
         slides.forEach((slide, i) => {
           slide.querySelectorAll('.print-footer').forEach((el) => el.remove());
@@ -976,8 +1108,12 @@ on /admin → API keys.
         });
       }
 
+      buildPrintLogos();
       buildPrintFooters();
-      window.addEventListener('beforeprint', buildPrintFooters);
+      window.addEventListener('beforeprint', () => {
+        buildPrintLogos();
+        buildPrintFooters();
+      });
 
       const requested = Number.parseInt(location.hash.slice(1), 10);
       show(Number.isFinite(requested) && requested > 0 ? requested - 1 : 0);
