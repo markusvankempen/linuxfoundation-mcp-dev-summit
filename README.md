@@ -2,7 +2,8 @@
 
 **MCP as a Platform: What I Learned Building a Portfolio of MCP Servers**
 
-Markus van Kempen · MCP Dev Summit Toronto · Linux Foundation  
+Markus van Kempen · Mensch, Maker and Developer  
+*No bug too small, no syntax too weird.*  
 Monday 5 October 2026 · 12:00–12:25 EDT · Terrace East + West
 
 [![Session banner](assets/banner.jpeg)](https://events.linuxfoundation.org/mcp-dev-summit-toronto/program/schedule/?id=1282401)
