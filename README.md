@@ -11,7 +11,7 @@ Monday 5 October 2026 · 12:00–12:25 EDT · Terrace East + West
 [**Session page**](https://events.linuxfoundation.org/mcp-dev-summit-toronto/program/schedule/?id=1282401) ·
 [Portfolio](https://markusvankempen.github.io/)
 
-Slides, PDF, and the demo walkthrough go up **4 October** — the day before the session.
+**[View slides](https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/#1)** (HTML, no speaker notes). Session splash page: [session.html](session.html).
 
 Personal open-source talk materials. **Not an IBM product. Not an official Linux Foundation repository.**
 
