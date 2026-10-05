@@ -506,6 +506,11 @@
     .gap-lg { margin-top: clamp(18px, 5vh, 52px) !important; }
     .mono.lg { font-size: clamp(15px, min(1.4vw, 2.5vh), 22px); line-height: 1.7; padding: clamp(18px, 3vh, 30px) clamp(20px, 2.4vw, 34px); }
     .mono.narrow { max-width: 880px; }
+    @media screen { .deck .mono { font-size: clamp(17px, min(1.45vw, 2.5vh), 24px); line-height: 1.5; }
+      .deck .mono.lg { font-size: clamp(18px, min(1.6vw, 2.75vh), 26px); } }
+    @media screen and (max-height: 760px) { .deck .mono { font-size: 16px; } .deck .mono.lg { font-size: 17px; } }
+    @media screen { .deck .mono.compact { font-size: clamp(14px, min(1.1vw, 2vh), 18px); } }
+    @media screen { .deck .mono.md { font-size: clamp(14px, min(1.15vw, 2.1vh), 19px); } }
     .panel ul.roomy li { margin: clamp(6px, 1.4vh, 14px) 0; }
     .grid.map { gap: clamp(12px, 2vh, 22px); }
     .grid.map .panel { padding: clamp(16px, 3vh, 30px) 18px; }
@@ -521,6 +526,42 @@
     @media print { .mono.lg { font-size: 13.5px; line-height: 1.55; padding: 16px 20px; } .gap-lg { margin-top: 22px !important; } .gap-md { margin-top: 14px !important; } }
     @media (max-width: 720px) { .close-split, .close-split.split-qr { grid-template-columns: 1fr minmax(160px, 42vw); } }
   </style>
+  <style>
+    html.preview .controls, html.preview .notes, html.preview .timer, html.preview .jump-dialog { display: none !important; }
+    html.presenter body > *:not(#presenter) { display: none !important; }
+    #presenter { position: fixed; inset: 0; display: flex; flex-direction: column; background: #0b1210; color: #e6eee8; font-family: var(--sans); }
+    #presenter header { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid #22302a; font-size: 15px; }
+    #presenter .p-label { font: 600 15px var(--code); color: #c8f168; white-space: nowrap; }
+    #presenter .p-title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    #presenter .p-spacer { flex: 1; }
+    #presenter .p-timer { font: 700 26px var(--code); padding: 2px 10px; border-radius: 8px; }
+    #presenter .p-timer.warn { color: #ffd166; }
+    #presenter .p-timer.over { background: #ff7a59; color: #111; }
+    #presenter .p-clock { font: 500 18px var(--code); color: #9fb3a8; }
+    #presenter button { font: 600 14px var(--code); color: #e6eee8; background: #18231f; border: 1px solid #2c3b34; border-radius: 8px; padding: 7px 12px; cursor: pointer; }
+    #presenter button:hover { background: #22302a; }
+    #presenter main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; padding: 18px; }
+    #presenter .p-left { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+    #presenter .p-frame { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 10px; border: 1px solid #2c3b34; background: #000; flex: none; }
+    #presenter .p-frame iframe { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; transform: scale(var(--s, 0.5)); pointer-events: none; }
+    #presenter .p-next { width: 62%; opacity: .85; }
+    #presenter.at-end .p-next { visibility: hidden; }
+    #presenter .p-nextlabel { font: 500 14px var(--code); color: #9fb3a8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #presenter .p-notes { overflow-y: auto; line-height: 1.45; padding: 4px 6px 40px 0; }
+    #presenter .p-notes p { margin: 0 0 .55em; }
+    #presenter .p-notes p.q { color: #c8f168; font-weight: 600; margin-top: .9em; }
+    #presenter .p-notes p.a { color: #b9cbc1; padding-left: 1em; }
+    #presenter .p-notes p.cue { color: #ffd166; }
+  </style>
+  <style>
+    .slides-qr { position: absolute; right: clamp(32px, 6vw, 96px); bottom: clamp(70px, 12vh, 130px); width: clamp(160px, 14vw, 240px); background: #fff; border-radius: 14px; padding: 10px 10px 6px; text-align: center; text-decoration: none; box-shadow: var(--panel-shadow); z-index: 2; }
+    .slides-qr img { width: 100%; height: auto; display: block; }
+    .todo { list-style: none; margin: clamp(8px, 1.6vh, 16px) 0 0; padding: 0; display: grid; gap: clamp(10px, 2.2vh, 24px); max-width: 1150px; }
+    .todo li { display: grid; grid-template-columns: 100px 1fr; align-items: baseline; gap: 14px; font-size: clamp(17px, min(1.6vw, 2.8vh), 26px); line-height: 1.35; }
+    .todo .tag { justify-self: start; }
+    .slides-qr span { display: block; margin-top: 4px; font: 600 12px var(--code); color: #0b1210; }
+    @media print { .slides-qr { right: 56px; bottom: 70px; width: 150px; box-shadow: none; } }
+  </style>
 </head>
 <body>
   <div class="deck">
@@ -532,16 +573,40 @@
       data-ref="github.com/markusvankempen/mcp-ticket-demo"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
-        <div class="eyebrow">MCP Dev Summit Toronto · 25 minutes · MCP Demo v3.0.1</div>
+        <div class="eyebrow">MCP Dev Summit Toronto · Tue 6 Oct · 11:50–12:15 · MCP Demo v3.0.1</div>
         <h1>MCP as a Platform<br><span class="accent">What I Learned Building a Portfolio of MCP Servers</span></h1>
         <p class="lede">One server teaches you the protocol. A portfolio teaches you what MCP actually is — and the mistakes I only found by building the next one.</p>
         <p class="lede" style="margin-top:14px">Every example here is in one small server you can clone tonight: <strong>MCP Demo v3.0.1</strong> — <a href="https://github.com/markusvankempen/mcp-ticket-demo">github.com/markusvankempen/mcp-ticket-demo</a></p>
         <p class="source">Markus van Kempen · Mensch, Maker and Developer<br><em>No bug too small, no syntax too weird.</em></p>
+        <a class="slides-qr" href="https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/" target="_blank" rel="noopener">
+          <img src="qr-slides.png" alt="QR code: slides online">
+          <span>Slides online</span>
+        </a>
         <div class="contact">
           <a href="mailto:mvankempen@ca.ibm.com">mvankempen@ca.ibm.com</a>
           <a href="mailto:markus.van.kempen@gmail.com">markus.van.kempen@gmail.com</a>
+          <a href="https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/">Slides online</a>
           <a href="https://markusvankempen.github.io/">markusvankempen.github.io</a>
         </div>
+      </div>
+    </section>
+
+    <!-- 02 · running example demo -->
+    <section class="slide"
+      data-ref="mcp-ticket-demo"
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
+      <div class="content">
+        <div class="eyebrow">The running example · demo</div>
+        <h2>Meet the ticket server.<br><span class="accent">Every example today runs on it.</span></h2>
+        <div class="mono gap-md"># in the IDE chat
+&gt; Show me all tickets and their status.
+
+→ run_query  schema: "tickets"
+← <span class="hl">TCK-1001</span>  open     0 tools discovered after I registered the server
+  <span class="hl">TCK-1002</span>  pending  Customer never got the reply — ticket looks fine in the API
+  <span class="hl">TCK-1003</span>  solved   mcp.json worked yesterday, 404 today</div>
+        <p class="small gap-md">Local: <a href="http://localhost:8787/health" target="_blank" rel="noopener">localhost:8787</a> · started with <code>MCP_MODE=http npx mcp-ticket-demo</code> · tickets are only the stand-in</p>
+        <div class="quote two-lines gap-md"><strong>Every seed ticket is a mistake from this talk.<br>The rest of the talk is how each one got fixed.</strong></div>
       </div>
     </section>
 
@@ -554,13 +619,13 @@
         <h2>Every answer raised<br><span class="accent">a new question.</span></h2>
         <div class="grid four map gap-lg">
           <div class="panel"><span class="tag">01</span><h3>Prove it's up</h3></div>
-          <div class="panel bad"><span class="tag">02</span><h3>When OK wasn't OK</h3></div>
-          <div class="panel"><span class="tag">03</span><h3>An extension</h3></div>
-          <div class="panel bad"><span class="tag">04</span><h3>Which server answers?</h3></div>
-          <div class="panel"><span class="tag">05</span><h3>A control plane</h3></div>
-          <div class="panel bad"><span class="tag">06</span><h3>Past 100 tools</h3></div>
+          <div class="panel"><span class="tag">02</span><h3>Easy to ship and use</h3></div>
+          <div class="panel bad"><span class="tag">03</span><h3>Which server answers?</h3></div>
+          <div class="panel bad"><span class="tag">04</span><h3>When OK wasn't OK</h3></div>
+          <div class="panel bad"><span class="tag">05</span><h3>Past 100 tools</h3></div>
+          <div class="panel"><span class="tag">06</span><h3>A control plane</h3></div>
           <div class="panel"><span class="tag">07</span><h3>Remote configuration</h3></div>
-          <div class="panel"><span class="tag">Next</span><h3>Events</h3></div>
+          <div class="panel"><span class="tag">08</span><h3>The server talks back</h3></div>
         </div>
         <p class="small gap-lg">Running example: <strong>mcp-ticket-demo</strong>. Tickets are only the stand-in.</p>
       </div>
@@ -573,7 +638,7 @@
       <div class="content">
         <div class="eyebrow">Where it starts</div>
         <h2>The first version is<br><span class="accent">deceptively simple.</span></h2>
-        <div class="mono">client → MCP server → your API
+        <div class="mono md">client → MCP server → your API
              |
              <span class="hl">+-- tool: request(path, method, query, body)</span>
 
@@ -639,6 +704,7 @@ No error. No warning.</div>
   <span class="hl">"tools": 19</span> }</div>
         </div>
         <div class="quote two-lines gap-lg"><strong>The client can't tell you why.<br>The server's count can: the problem is the connection.</strong></div>
+        <p class="small gap-md">Try it: <code><a href="http://localhost:8787/health?format=json" target="_blank" rel="noopener">curl -s localhost:8787/health?format=json</a></code></p>
       </div>
     </section>
 
@@ -649,21 +715,94 @@ No error. No warning.</div>
       <div class="content">
         <div class="eyebrow">01 · Alive is not works · demo</div>
         <h2>Alive is not works.<br><span class="accent">Ask the tools, not the process.</span></h2>
-        <div class="mono lg narrow gap-md">$ <a class="hl" href="http://localhost:8787/test?format=json" target="_blank" rel="noopener">curl -s $HOST/test?format=json</a>
+        <div class="grid gap-md">
+          <div class="mono lg bad"># the MCP standard: ping
+
+→ { "method": "ping" }
+← { "result": <span class="hl">{}</span> }
+
+The process answered.
+That is all it says.</div>
+          <div class="mono lg">$ <a class="hl" href="http://localhost:8787/test?format=json" target="_blank" rel="noopener">curl -s $HOST/test?format=json</a>
 
 { "ok": true, "steps": [
-  { "name": "tickets (open)",    "ok": true },
-  { "name": "run_query tickets", "ok": true } … ] }</div>
-        <p class="small gap-lg">Then discovery: <a href="http://localhost:8787/test?format=json" target="_blank" rel="noopener">/test?format=json</a> smoke test · <a href="http://localhost:8787/tools?format=json" target="_blank" rel="noopener">/tools?format=json</a> every tool and its help · <a href="http://localhost:8787/help" target="_blank" rel="noopener">/help</a> guides · <code>describe_server</code>, the tool to call first.</p>
+  { "name": "tickets (open)",
+    "ok": true },
+  { "name": "run_query tickets",
+    "ok": true } … ] }</div>
+        </div>
+        <div class="quote two-lines gap-md"><strong>Ping proves the process is alive.<br>Only calling the tools proves they work.</strong></div>
+        <p class="small gap-md">Try it: <code><a href="http://localhost:8787/test?format=json" target="_blank" rel="noopener">curl -s localhost:8787/test?format=json</a></code> · <code><a href="http://localhost:8787/tools?format=json" target="_blank" rel="noopener">curl -s localhost:8787/tools?format=json</a></code> · then <a href="http://localhost:8787/help" target="_blank" rel="noopener">/help</a> and <code>describe_server</code>, the tool to call first.</p>
       </div>
     </section>
 
     <!-- 07 -->
     <section class="slide"
+      data-ref="mcp-ticket-demo — extension/"
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo/tree/main/extension"
+      data-ref2="LF MCP Demo extension — Marketplace"
+      data-ref2-url="https://marketplace.visualstudio.com/items?itemName=MarkusvanKempen.lf-mcp-summit-demo">
+      <div class="content">
+        <div class="eyebrow">02 · Easy to ship and use · demo</div>
+        <h2>From curl and guesswork<br><span class="accent">to one install.</span></h2>
+        <div class="architecture">
+          <div class="node"><strong>Editor extension</strong><span>Ships the server<br>Writes every mcp.json<br>Diagnoses the chain</span></div>
+          <div class="arrow">→</div>
+          <div class="node core"><strong>MCP server</strong><span>Same tools<br>Same schemas<br>Same domain behaviour</span></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Enterprise API</strong><span>Tickets · Assets<br>Jobs · Containers<br>Agents</span></div>
+        </div>
+        <div class="small gap-md" style="display:flex; flex-wrap:wrap; gap:8px 10px; justify-content:center; align-items:center">
+          <strong>Transports</strong>
+          <span class="tag">stdio</span><span class="tag">Streamable HTTP</span><span class="tag">SSE</span>
+          <span style="opacity:.4">|</span>
+          <strong>Runs on</strong>
+          <span class="tag">laptop · npx</span><span class="tag">container · Podman</span><span class="tag">cloud · Code Engine</span>
+        </div>
+        <div class="grid gap-md">
+          <div class="mono lg bad"># before: curl and guesswork
+curl $HOST/health
+curl $HOST/tools?format=json
+edit mcp.json, restart: <span class="hl">0 tools</span></div>
+          <a class="shot has-img" style="height:min(24vh, 280px); margin-top:0" href="https://marketplace.visualstudio.com/items?itemName=MarkusvanKempen.lf-mcp-summit-demo" target="_blank" rel="noopener">
+            <img src="IDEExtension.png" alt="Extension diagnostics, 17 of 17 passed">
+          </a>
+        </div>
+        <div class="quote two-lines gap-md"><strong>The extension is the front door.<br>The MCP server is the capability.</strong></div>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="slide"
+      data-ref="mcp-ticket-demo"
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
+      <div class="content">
+        <div class="eyebrow">03 · Which server answers?</div>
+        <h2>Which server is the client<br><span class="accent">actually talking to?</span></h2>
+        <div class="grid three gap-md">
+          <div class="panel bad"><h3>Two memories</h3><p>Each IDE's stdio config spawns its own copy.</p></div>
+          <div class="panel bad"><h3>A stale copy</h3><p><code>npx …@latest</code> in the IDE, a bundled copy in the extension.</p></div>
+          <div class="panel bad"><h3>A stranger on the port</h3><p>Another server answered. Its tools showed up as mine.</p></div>
+        </div>
+        <div class="grid gap-md">
+          <div class="panel"><span class="tag">FIX</span><h3>HTTP by default</h3><p>The extension and every <code>mcp.json</code> point at one server. One process, one memory.</p></div>
+          <div class="mono"># every copy says which copy it is
+{ "service": "mcp-ticket-demo",
+  "instance": {
+    "label": "local",
+    "id": "Markuss-MacBook-Pro.local",
+    "url": "http://127.0.0.1:8787" } }</div>
+        </div>
+        <p class="small gap-md">Same <code>instance</code> on <code>/health</code>, <code>/test</code>, <code>/tools</code> and <code>describe_server</code>. The extension checks it before trusting the tool list.</p>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section class="slide"
       data-ref="mcp-ticket-demo — the attribution scar"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo/blob/main/docs/DEMO.md">
       <div class="content">
-        <div class="eyebrow">02 · When OK wasn't OK</div>
+        <div class="eyebrow">04 · When OK wasn't OK</div>
         <h2>The call succeeded.<br><span class="accent">The outcome was wrong.</span></h2>
         <div class="grid gap-md">
           <div class="mono lg bad"># 201 Created
@@ -679,12 +818,12 @@ The model retried. And retried.
       </div>
     </section>
 
-    <!-- 08 -->
+    <!-- 10 -->
     <section class="slide"
       data-ref="mcp-ticket-demo — LESSONS-LEARNED.md"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo/blob/main/docs/LESSONS-LEARNED.md">
       <div class="content">
-        <div class="eyebrow">02 · How we stopped it</div>
+        <div class="eyebrow">04 · How we stopped it</div>
         <h2>Tell the model before.<br><span class="accent">Tell it again after.</span></h2>
         <div class="grid gap-md">
           <div class="mono lg"># the tool description (before the call)
@@ -707,136 +846,51 @@ create_ticket
       </div>
     </section>
 
-    <!-- 09 -->
-    <section class="slide"
-      data-ref="github.com/markusvankempen/mcp-ticket-demo"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
-      <div class="content">
-        <div class="eyebrow">The recurring architecture</div>
-        <h2>One capability.<br><span class="accent">Multiple ways to run it.</span></h2>
-        <div class="architecture">
-          <div class="node"><strong>Editor extension</strong><span>Guided setup<br>Visual UI<br>Diagnostics</span></div>
-          <div class="arrow">→</div>
-          <div class="node core"><strong>MCP server</strong><span>Same tools<br>Same schemas<br>Same domain behaviour</span></div>
-          <div class="arrow">→</div>
-          <div class="node"><strong>Enterprise API</strong><span>Tickets · Assets<br>Jobs · Containers<br>Agents</span></div>
-        </div>
-        <div class="grid three" style="margin-top:20px">
-          <div class="panel"><h3>Extension</h3><p>Setup, visibility, one-click <code>mcp.json</code>.</p></div>
-          <div class="panel"><h3>Local stdio</h3><p>Fast feedback. No port, no URL, credentials stay on your machine.</p></div>
-          <div class="panel"><h3>Remote HTTP</h3><p>Shared URL, server-side secrets, team and CI access.</p></div>
-        </div>
-        <div class="quote" style="margin-top:22px"><strong>The extension is the control plane.<br>The MCP server is the capability.</strong></div>
-      </div>
-    </section>
-
-    <!-- 10 -->
-    <section class="slide"
-      data-ref="mcp-ticket-demo — extension/"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo/tree/main/extension"
-      data-ref2="LF MCP Demo extension — Marketplace"
-      data-ref2-url="https://marketplace.visualstudio.com/items?itemName=MarkusvanKempen.lf-mcp-summit-demo">
-      <div class="content">
-        <div class="eyebrow">03 · An extension · install</div>
-        <h2>Never leave the IDE.<br><span class="accent">The server ships inside.</span></h2>
-        <div class="grid roomy gap-md">
-          <div class="panel" style="display:flex;align-items:center">
-            <ul class="roomy">
-              <li><strong>Install:</strong> no npm, no clone.</li>
-              <li><strong>Setup:</strong> one click, every IDE.</li>
-              <li><strong>Diagnose:</strong> checks each link, names the one that broke.</li>
-              <li><strong>Prompt check:</strong> see which tool it picks.</li>
-            </ul>
-          </div>
-          <a class="shot small has-img" href="https://marketplace.visualstudio.com/items?itemName=MarkusvanKempen.lf-mcp-summit-demo" target="_blank" rel="noopener">
-            <img src="IDEExtension.png" alt="Extension diagnostics, 17 of 17 passed">
-          </a>
-        </div>
-      </div>
-    </section>
-
     <!-- 11 -->
     <section class="slide"
-      data-ref="mcp-ticket-demo"
+      data-ref="mcp-ticket-demo — auth modes, scopes, API keys"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
-        <div class="eyebrow">04 · Which server answers?</div>
-        <h2>Which server is the client<br><span class="accent">actually talking to?</span></h2>
-        <div class="grid roomy three gap-md">
-          <div class="panel bad"><h3>Two memories</h3><p>Each IDE's stdio config spawns its own copy.</p></div>
-          <div class="panel bad"><h3>A stale copy</h3><p><code>npx …@latest</code> in the IDE, a bundled copy in the extension.</p></div>
-          <div class="panel bad"><h3>A stranger on the port</h3><p>Another server answered. Its tools showed up as mine.</p></div>
-        </div>
-        <div class="quote two-lines gap-lg"><strong>The tool list tells you what answered —<br>not what you meant to start.</strong></div>
-      </div>
-    </section>
-
-    <!-- 12 -->
-    <section class="slide"
-      data-ref="mcp-ticket-demo"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
-      data-ref2="Lab 7 — MCP Basics"
-      data-ref2-url="https://github.com/markusvankempen/wxo-labs/blob/main/WXO_LABS_TUTORIAL_GUIDE.md#lab-7-mcp-basics---your-first-mcp-server">
-      <div class="content">
-        <div class="eyebrow">04 · The fix</div>
-        <h2>One server.<br><span class="accent">Check who answers.</span></h2>
-        <div class="grid roomy gap-md">
-          <div class="panel"><h3>HTTP by default</h3><p>The extension and every <code>mcp.json</code> point at one server. One process, one memory.</p></div>
-          <div class="panel"><h3>Name and id check</h3><p><code>describe_server</code> and <code>/health</code> say who answers. Block only a real mismatch.</p></div>
-        </div>
-        <p class="small gap-lg">The price: a shared local server needs auth from day one, and a Host header check.</p>
-      </div>
-    </section>
-
-    <!-- 13 -->
-    <section class="slide"
-      data-ref="mcp-ticket-demo — /health · /test · /tools · /admin · /log"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
-      <div class="content">
-        <div class="eyebrow">05 · A control plane · demo</div>
-        <h2>The server got its own UI.<br><span class="accent">Then it became the control plane.</span></h2>
+        <div class="eyebrow">04 · Errors that teach</div>
+        <h2>A wrong call should<br><span class="accent">teach the right one.</span></h2>
         <div class="grid gap-md">
-          <div class="mono lg"><a class="hl" href="http://localhost:8787/health" target="_blank" rel="noopener">/health</a> <a class="hl" href="http://localhost:8787/test" target="_blank" rel="noopener">/test</a> <a class="hl" href="http://localhost:8787/tools" target="_blank" rel="noopener">/tools</a>
-  see it, try every tool
+          <div class="mono lg bad"># 403 Forbidden
 
-<a class="hl" href="http://localhost:8787/admin" target="_blank" rel="noopener">/admin</a>
-  keys · scopes · gates
-
-<a class="hl" href="http://localhost:8787/log" target="_blank" rel="noopener">/log</a>
-  audit trail · call trace</div>
-          <a class="shot has-img fit" href="http://localhost:8787/admin" target="_blank" rel="noopener">
-            <img src="mcp-ui-dark.png" alt="The server's /admin page, Tool Gates tab: auth mode, keys, tool count, and per-tool scope, disable and lock.">
-          </a>
+→ the model tweaks a field
+→ tries again, and again
+→ <span class="hl">"the system is unavailable"</span></div>
+          <div class="mono lg">{ "ok": false, "status": 403,
+  "error": "key has scopes [read]
+    but create_ticket requires
+    the <span class="hl">write</span> scope. Issue a key
+    with that scope on <span class="hl">/admin</span>,
+    then retry once." }</div>
         </div>
-        <p class="small gap-md">Local run: <a href="http://localhost:8787/admin" target="_blank" rel="noopener">http://localhost:8787/admin</a> (demo / demo)</p>
+        <div class="quote two-lines gap-lg"><strong>A bare refusal starts a loop.<br>A refusal that names the fix ends it.</strong></div>
       </div>
     </section>
-
-    <!-- 14 -->
+    <!-- 12 -->
     <section class="slide"
       data-ref="maximo-mcp-ai-integration-options"
       data-ref-url="https://github.com/markusvankempen/maximo-mcp-ai-integration-options"
       data-ref2="mcp-ticket-demo — the same three tools"
       data-ref2-url="https://github.com/markusvankempen/mcp-ticket-demo">
       <div class="content">
-        <div class="eyebrow">06 · Past a hundred tools</div>
+        <div class="eyebrow">05 · Past a hundred tools</div>
         <h2>More tools didn't mean<br><span class="accent">more capability.</span></h2>
         <div class="grid">
           <div class="mono bad">— BEFORE —
-
 query_records
 query_with_filter
 query_with_fields
 query_object_structure
 query_work_orders
 query_assets
-query_locations
-...
+query_locations …
 
 <span class="hl">Every name correct.
 The model still picked wrong.</span></div>
           <div class="mono">— AFTER —
-
 <span class="hl">describe_server</span> what am I allowed to do?
 <span class="hl">get_schema</span>      what can I query?
 <span class="hl">get_schema name</span> what shape do I need?
@@ -850,12 +904,12 @@ Selection stopped being a coin flip.</span></div>
       </div>
     </section>
 
-    <!-- 15 -->
+    <!-- 13 -->
     <section class="slide"
       data-ref="mcp-ticket-demo — the tool catalog"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo/blob/main/server/README.md">
       <div class="content">
-        <div class="eyebrow">06 · Past a hundred tools · the rule</div>
+        <div class="eyebrow">05 · Past a hundred tools · the rule</div>
         <h2>Think of it like a database.<br><span class="accent">Reads are queries. Writes stay verbs.</span></h2>
         <div class="grid four db gap-md">
           <div class="panel"><span class="tag">≈ CATALOG</span><h3>What exists?</h3><p><code>describe_server</code><br><code>get_schema</code></p></div>
@@ -867,7 +921,33 @@ Selection stopped being a coin flip.</span></div>
       </div>
     </section>
 
-    <!-- 16 -->
+    <!-- 14 -->
+    <section class="slide"
+      data-ref="mcp-ticket-demo — /health · /test · /tools · /admin · /log"
+      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
+      <div class="content">
+        <div class="eyebrow">06 · A control plane · demo</div>
+        <h2>The server got its own UI.<br><span class="accent">Then it became the control plane.</span></h2>
+        <div class="grid gap-md">
+          <div class="mono lg"><a class="hl" href="http://localhost:8787/health" target="_blank" rel="noopener">/health</a> <a class="hl" href="http://localhost:8787/test" target="_blank" rel="noopener">/test</a> <a class="hl" href="http://localhost:8787/tools" target="_blank" rel="noopener">/tools</a>
+  see it, try every tool
+<a class="hl" href="http://localhost:8787/admin" target="_blank" rel="noopener">/admin</a>
+  keys · scopes · gates
+<a class="hl" href="http://localhost:8787/log" target="_blank" rel="noopener">/log</a>
+  audit trail · call trace</div>
+          <a class="shot has-img" style="height:min(30vh, 300px); margin-top:0" href="http://localhost:8787/admin" target="_blank" rel="noopener">
+            <img src="mcp-ui-dark.png" alt="The server's /admin page, Tool Gates tab: auth mode, keys, tool count, and per-tool scope, disable and lock.">
+          </a>
+        </div>
+        <div class="grid three gap-md">
+          <div class="panel"><span class="tag">WHY</span><h3>Not everyone has the IDE</h3><p>Ops, security and support open a URL. Nothing to install.</p></div>
+          <div class="panel"><span class="tag">WHY</span><h3>It lives with the server</h3><p>A hosted copy has no editor next to it. Its UI runs where it runs.</p></div>
+          <div class="panel"><span class="tag">WHY</span><h3>One source of truth</h3><p>Keys, gates and the trace live on the server, for every client.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 15 -->
     <section class="slide"
       data-ref="Code Engine MCP — server_* admin tools"
       data-ref-url="https://markusvankempen.github.io/"
@@ -890,47 +970,47 @@ Read the call trace</div>
 <span class="hl">server_users</span>
 <span class="hl">server_log</span></div>
         </div>
-        <p class="small gap-lg">Same scopes. One audit trace. No browser, no redeploy.</p>
+        <div class="grid three gap-md">
+          <div class="panel"><span class="tag">WHY</span><h3>Fleet management</h3><p>One script makes the same change on every copy: local, staging, production.</p></div>
+          <div class="panel"><span class="tag">WHY</span><h3>Incident response</h3><p>Revoke a key or lock a tool everywhere, in seconds.</p></div>
+          <div class="panel"><span class="tag">WHY</span><h3>Agents run ops</h3><p>An ops agent rotates keys and reads the trace. No browser.</p></div>
+        </div>
+        <p class="small gap-md">Same scopes. One audit trace. No browser, no redeploy.</p>
       </div>
     </section>
 
-    <!-- 17 -->
+    <!-- 16 -->
     <section class="slide"
       data-ref="mcp-ticket-demo — events over SSE, stdio and MQTT"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
       data-ref2="Code Engine MCP — server_log events"
       data-ref2-url="https://markusvankempen.github.io/">
       <div class="content">
-        <div class="eyebrow">Now · Events</div>
+        <div class="eyebrow">08 · The server talks back</div>
         <h2>From a server you call<br><span class="accent">to a server that tells you.</span></h2>
+        <div class="grid gap-md">
+          <div class="panel bad"><span class="tag">POLL</span><h3>The agent keeps asking</h3><p>"Anything new?" on a loop. Most answers are no, and every check costs tokens.</p></div>
+          <div class="panel"><span class="tag">PUSH</span><h3>The server tells you</h3><p>One open stream. <code>ticket.*</code> events arrive when they happen.</p></div>
+        </div>
         <div class="grid three gap-md">
-          <div class="mono lg"># the server says
-
+          <div class="mono"># the server says
 ticket.created
-  TCK-1042
   <span class="hl">"Checkout is down"</span>
-
-Third like it
-in ten minutes.</div>
-          <div class="mono lg"># an agent reacts
-
+Third in ten minutes.</div>
+          <div class="mono"># an agent reacts
 <span class="hl">run_query</span> tickets "down"
-  → three open, same hour
-<span class="hl">add_comment</span> on each:
+<span class="hl">add_comment</span> on all three:
   "Known incident, on it."</div>
-          <div class="mono lg"># a human is paged
-
-"Three outage tickets
- in ten minutes.
+          <div class="mono"># a human is paged
+"Three outage tickets.
  <span class="hl">One incident?</span>"
-
 → confirms, takes over.</div>
         </div>
-        <p class="small gap-lg">Running in the demo: <code>ticket.*</code> events as standard logging notifications, over SSE, Streamable HTTP and stdio, with an optional MQTT bridge.</p>
+        <div class="quote two-lines gap-md"><strong>Agents that act when something happens,<br>not only when someone asks.</strong></div>
       </div>
     </section>
 
-    <!-- 18 -->
+    <!-- 17 -->
     <section class="slide"
       data-ref="markusvankempen.github.io — every server in the portfolio"
       data-ref-url="https://markusvankempen.github.io/"
@@ -939,13 +1019,18 @@ in ten minutes.</div>
       <div class="content">
         <div class="eyebrow">What carries to the next server</div>
         <h2>MCP servers can become<br><span class="accent">more than integrations.</span></h2>
-        <div class="quote two-lines gap-md"><strong>Good tools. Clear docs.<br>Honest metadata. A place to find them.</strong></div>
-        <div class="quote two-lines gap-lg"><strong>The model never opens your README.<br>The description is the entire manual.</strong></div>
-        <div class="quote two-lines gap-lg"><strong>The extension or the MCP UI is the control plane.<br>The MCP server is the capability.<br>The agent is the operator.</strong></div>
+        <p class="small gap-md"><strong>On your next server:</strong></p>
+        <ol class="todo">
+          <li><span class="tag">01</span><span><strong>Prove it.</strong> <code>/health</code> with a tool count, and a <code>/test</code> that calls the tools.</span></li>
+          <li><span class="tag">02 · 06</span><span><strong>Give it front doors.</strong> Bundle the server in an IDE extension (one install, one-click setup, Diagnose), and a UI for the people who operate it.</span></li>
+          <li><span class="tag">05</span><span><strong>Make it discoverable.</strong> <code>describe_server</code> first, <code>get_schema</code> for the shape, tool names that say the intent.</span></li>
+        </ol>
+        <p class="small gap-md">All three are in <strong>MCP Demo v3.0.1</strong>. Clone it and copy what you need.</p>
+        <div class="quote two-lines gap-md"><strong>The extension and the MCP UI are the control plane.<br>The MCP server is the capability.<br>The agent is the operator.</strong></div>
       </div>
     </section>
 
-    <!-- 19 -->
+    <!-- 18 -->
     <section class="slide"
       data-ref="github.com/markusvankempen/mcp-ticket-demo"
       data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo"
@@ -962,10 +1047,11 @@ in ten minutes.</div>
             <div class="contact">
               <a href="mailto:mvankempen@ca.ibm.com">mvankempen@ca.ibm.com</a>
               <a href="mailto:markus.van.kempen@gmail.com">markus.van.kempen@gmail.com</a>
+              <a href="https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/">Slides online</a>
               <a href="https://markusvankempen.github.io/">markusvankempen.github.io</a>
             </div>
             <p class="whereabouts">Markus <span class="rank">· Research · Floor 7½</span> <span class="emoji">🏢🤏</span></p>
-            <p class="small" style="margin-top:12px">Backup slides follow — press → for acronyms, publish, deploy, auth, the curl demo, errors that teach, testing, and how to run the demo tonight.</p>
+            <p class="small" style="margin-top:12px">Backup slides follow — press → for acronyms, publish, deploy, auth, the curl demo, testing, and how to run the demo tonight.</p>
           </div>
           <aside class="qr-card">
             <img src="session-feedback-qr.png" alt="Sessionize QR code for session feedback">
@@ -1185,7 +1271,7 @@ mcp() { curl -s "$MCP" \
       <div class="content">
         <div class="eyebrow">Appendix · Metadata and errors</div>
         <h2>Shape, meaning, permission:<br><span class="accent">five calls.</span></h2>
-        <div class="mono"># 1 · what the client sees: hints, required, output shape
+        <div class="mono compact"># 1 · what the client sees: hints, required, output shape
 mcp '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 
 # 2 · good call: structuredContent + next
@@ -1311,34 +1397,6 @@ The choices are in the brackets.</div>
       </div>
     </section>
 
-    <!-- Appendix — errors that teach -->
-    <section class="slide"
-      data-appendix="true"
-      data-ref="mcp-ticket-demo"
-      data-ref-url="https://github.com/markusvankempen/mcp-ticket-demo">
-      <div class="content">
-        <div class="eyebrow">Appendix · Errors that teach</div>
-        <h2>A wrong call should<br><span class="accent">teach the right one.</span></h2>
-        <div class="grid">
-          <div class="mono bad">{ "error": "Bad Request" }
-
-→ the model tweaks a field
-→ tries again, and again
-→ "the server is unavailable"</div>
-          <div class="mono">{ "ok": false,
-  "error": "ticket action get
-            is missing ticket_id.",
-  "next":  "Pass ticket_id. Find ids
-            with action search." }</div>
-        </div>
-        <div class="grid three" style="margin-top:18px">
-          <div class="panel"><span class="tag">1</span><h3>tools/list</h3><p>The action description says what each action needs.</p></div>
-          <div class="panel"><span class="tag">2</span><h3>get_schema</h3><p>Exact required and optional fields, per action.</p></div>
-          <div class="panel"><span class="tag">3</span><h3>next</h3><p>Every result says what to call next.</p></div>
-        </div>
-      </div>
-    </section>
-
     <!-- Appendix — testing -->
     <section class="slide"
       data-appendix="true"
@@ -1372,7 +1430,7 @@ The choices are in the brackets.</div>
       <div class="content">
         <div class="eyebrow">Appendix · Try it tonight</div>
         <h2>Clone the repo.<br><span class="accent">Run it in about ten minutes.</span></h2>
-        <p class="lede">Every example in this talk is in <strong>MCP Demo</strong>. Personal open-source project. You need Node 18+.</p>
+        <p class="lede">Every example in this talk is in <strong>MCP Demo</strong>. Personal open-source project. Slides: <a href="https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/">linuxfoundation-mcp-dev-summit</a> · You need Node 18+.</p>
         <div class="close-split split-qr" style="margin-top:16px">
           <div class="mono">git clone https://github.com/markusvankempen/mcp-ticket-demo
 cd mcp-ticket-demo/server
@@ -1441,6 +1499,7 @@ npm run http</div>
       <span class="counter" id="counter">01 / 19</span>
       <button id="next" title="Next slide (→)">→</button>
       <button id="timerToggle" title="Toggle 25-minute timer (T)">T</button>
+      <button id="presenterToggle" title="Presenter view in a second window: notes, timer, next slide (P)">P</button>
       <button id="themeToggle" title="Color scheme — Dark. Click to cycle Light → Dark → Projector">C</button>
       <button id="transitionToggle" title="Transition — Fade. Click to cycle Fade → Slide → Rise → Cut (A)">A</button>
       <span class="timer" id="timer">00:00</span>
@@ -1519,6 +1578,8 @@ npm run http</div>
       applyTransition(storedTransition, { persist: false });
 
       const pad = (n) => String(n).padStart(2, '0');
+
+      const SLIDES_URL = 'https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/';
 
       // Slides stay generic; the concrete open-source reference lives in the
       // footer. A slide may carry one or two refs (data-ref / data-ref2).
@@ -1600,9 +1661,19 @@ npm run http</div>
             bar.appendChild(ref);
           });
 
+          const sepSlides = document.createElement('span');
+          sepSlides.className = 'sep';
+          sepSlides.textContent = '·';
+          bar.appendChild(sepSlides);
+
+          const slidesLink = document.createElement('a');
+          slidesLink.href = SLIDES_URL;
+          slidesLink.textContent = 'Slides online';
+          bar.appendChild(slidesLink);
+
           const who = document.createElement('span');
           who.className = 'who';
-          who.textContent = 'Markus van Kempen · markusvankempen.github.io';
+          who.textContent = 'Markus van Kempen';
           bar.appendChild(who);
 
           slide.appendChild(bar);
@@ -1628,6 +1699,7 @@ npm run http</div>
         counter.textContent = label;
         renderFooter(slides[current], label);
         history.replaceState(null, '', `#${current + 1}`);
+        afterShow();
       }
 
       function tickTimer() {
@@ -1696,6 +1768,7 @@ npm run http</div>
         if (key === 't') toggleTimer();
         if (key === 'g') openJump();
         if (key === 'a') cycleTransition();
+        if (key === 'p') openPresenter();
       });
 
       // The feedback QR is dropped in per event. Without the file, drop the
@@ -1721,6 +1794,180 @@ npm run http</div>
       window.addEventListener('afterprint', () => {
         applyTheme(themeBeforePrint || 'dark', { persist: false });
       });
+
+      // --- Presenter view ---
+      // P opens this same file with ?presenter in a second window: notes,
+      // timer, and live previews of the current and next slide (?preview).
+      // postMessage rather than BroadcastChannel: file:// pages have opaque
+      // origins, and the presenter is always the deck's opened window.
+      const params = new URLSearchParams(location.search);
+      const MODE = params.has('presenter') ? 'presenter' : params.has('preview') ? 'preview' : 'deck';
+      const baseUrl = location.href.split('#')[0].split('?')[0];
+      let presenterWin = null;
+      let applyingRemote = false;
+      let renderPresenter = () => {};
+
+      function openPresenter() {
+        if (MODE !== 'deck') return;
+        presenterWin = window.open(`${baseUrl}?presenter#${current + 1}`, 'mcp-presenter', 'width=1280,height=800');
+      }
+
+      const afterShow = () => {
+        if (MODE === 'deck') {
+          if (presenterWin && !presenterWin.closed) presenterWin.postMessage({ mcpDeck: 'state', index: current }, '*');
+        } else if (MODE === 'presenter') {
+          renderPresenter();
+          if (!applyingRemote && window.opener && !window.opener.closed) {
+            window.opener.postMessage({ mcpDeck: 'goto', index: current }, '*');
+          }
+        }
+      };
+
+      window.addEventListener('message', (event) => {
+        const data = event.data || {};
+        if (MODE === 'deck' && (data.mcpDeck === 'hello' || data.mcpDeck === 'goto')) {
+          presenterWin = event.source;
+          if (data.mcpDeck === 'goto' && data.index !== current) show(data.index);
+          else afterShow();
+        }
+        if (MODE === 'presenter' && data.mcpDeck === 'state' && data.index !== current) {
+          applyingRemote = true;
+          show(data.index);
+          applyingRemote = false;
+        }
+      });
+
+      if (MODE === 'preview') {
+        document.documentElement.classList.add('preview');
+        document.documentElement.dataset.transition = 'none';
+        window.addEventListener('hashchange', () => {
+          const n = Number.parseInt(location.hash.slice(1), 10);
+          if (Number.isFinite(n) && n > 0) show(n - 1);
+        });
+      }
+
+      if (MODE === 'presenter') {
+        document.documentElement.classList.add('presenter');
+        document.title = `Presenter · ${document.title}`;
+        const root = document.createElement('div');
+        root.id = 'presenter';
+        root.innerHTML = `
+          <header>
+            <span class="p-label"></span>
+            <span class="p-title"></span>
+            <span class="p-spacer"></span>
+            <span class="p-timer" title="Elapsed talk time (T starts it)">--:--</span>
+            <span class="p-clock"></span>
+            <button data-act="smaller" title="Smaller notes">A−</button>
+            <button data-act="bigger" title="Bigger notes">A+</button>
+            <button data-act="timer" title="Start or restart the timer (T)">Start timer</button>
+            <button data-act="prev" title="Previous (←)">←</button>
+            <button data-act="next" title="Next (→)">→</button>
+          </header>
+          <main>
+            <section class="p-left">
+              <div class="p-frame p-cur"><iframe tabindex="-1" title="Current slide"></iframe></div>
+              <div class="p-nextlabel">Next · <span></span></div>
+              <div class="p-frame p-next"><iframe tabindex="-1" title="Next slide"></iframe></div>
+            </section>
+            <section class="p-notes"></section>
+          </main>`;
+        document.body.appendChild(root);
+
+        const $ = (sel) => root.querySelector(sel);
+        const curFrame = $('.p-cur iframe');
+        const nextFrame = $('.p-next iframe');
+        const notesEl = $('.p-notes');
+        const timerEl = $('.p-timer');
+        const clockEl = $('.p-clock');
+        const timerBtn = $('[data-act="timer"]');
+        const FONT_KEY = 'mcp-summit-presenter-font';
+        let fontPx = 22;
+        try { fontPx = Number(localStorage.getItem(FONT_KEY)) || 22; } catch (e) {}
+        notesEl.style.fontSize = `${fontPx}px`;
+
+        const titleOf = (slide) => {
+          const h = slide && slide.querySelector('h1, h2');
+          if (!h) return '';
+          const copy = h.cloneNode(true);
+          copy.querySelectorAll('br').forEach((br) => br.replaceWith(' '));
+          return copy.textContent.replace(/\s+/g, ' ').trim();
+        };
+
+        function setFrame(frame, index) {
+          const url = `${baseUrl}?preview#${index + 1}`;
+          if (frame.dataset.url !== url) {
+            frame.dataset.url = url;
+            frame.src = url;
+          }
+        }
+
+        function fitFrames() {
+          root.querySelectorAll('.p-frame').forEach((box) => {
+            box.style.setProperty('--s', box.clientWidth / 1440);
+          });
+        }
+
+        function renderNotes(text) {
+          notesEl.textContent = '';
+          if (!text) {
+            notesEl.textContent = 'No notes for this slide.';
+            return;
+          }
+          text.split('\n').forEach((line) => {
+            const p = document.createElement('p');
+            if (line.startsWith('Q:')) p.className = 'q';
+            else if (line.startsWith('→')) p.className = 'a';
+            else if (/^[A-Z][A-Z ,'-]{2,}:/.test(line)) p.className = 'cue';
+            p.textContent = line;
+            notesEl.appendChild(p);
+          });
+        }
+
+        renderPresenter = () => {
+          const slide = slides[current];
+          $('.p-label').textContent = labelFor(current);
+          $('.p-title').textContent = titleOf(slide);
+          renderNotes(slide.dataset.note || '');
+          notesEl.scrollTop = 0;
+          setFrame(curFrame, current);
+          const hasNext = current + 1 < slides.length;
+          root.classList.toggle('at-end', !hasNext);
+          $('.p-nextlabel span').textContent = hasNext ? `${labelFor(current + 1)} · ${titleOf(slides[current + 1])}` : 'End of deck';
+          if (hasNext) setFrame(nextFrame, current + 1);
+        };
+
+        function tickPresenter() {
+          const now = new Date();
+          clockEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+          if (!startedAt) return;
+          const elapsed = Date.now() - startedAt;
+          const total = Math.floor(elapsed / 1000);
+          timerEl.textContent = `${pad(Math.floor(total / 60))}:${pad(total % 60)} / ${pad(TALK_LIMIT_MS / 60000)}:00`;
+          timerEl.classList.toggle('over', elapsed > TALK_LIMIT_MS);
+          timerEl.classList.toggle('warn', elapsed > TALK_LIMIT_MS - 3 * 60 * 1000);
+          timerBtn.textContent = 'Restart timer';
+        }
+
+        root.addEventListener('click', (event) => {
+          const act = event.target.closest('button') && event.target.closest('button').dataset.act;
+          if (act === 'prev') show(current - 1);
+          if (act === 'next') show(current + 1);
+          if (act === 'timer') { startedAt = Date.now(); tickPresenter(); }
+          if (act === 'smaller' || act === 'bigger') {
+            fontPx = Math.max(14, Math.min(40, fontPx + (act === 'bigger' ? 2 : -2)));
+            notesEl.style.fontSize = `${fontPx}px`;
+            try { localStorage.setItem(FONT_KEY, String(fontPx)); } catch (e) {}
+          }
+        });
+
+        window.addEventListener('resize', fitFrames);
+        setInterval(tickPresenter, 1000);
+        fitFrames();
+        tickPresenter();
+        if (window.opener && !window.opener.closed) window.opener.postMessage({ mcpDeck: 'hello' }, '*');
+      }
+      document.getElementById('presenterToggle').addEventListener('click', openPresenter);
 
       const requested = Number.parseInt(location.hash.slice(1), 10);
       show(Number.isFinite(requested) && requested > 0 ? requested - 1 : 0);
