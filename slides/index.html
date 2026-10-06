@@ -525,6 +525,9 @@
     .grid.doors .panel p { margin: 0; color: var(--muted); }
     @media print { .mono.lg { font-size: 13.5px; line-height: 1.55; padding: 16px 20px; } .gap-lg { margin-top: 22px !important; } .gap-md { margin-top: 14px !important; } }
     @media (max-width: 720px) { .close-split, .close-split.split-qr { grid-template-columns: 1fr minmax(160px, 42vw); } }
+    .controls .pdf-btn { display: inline-flex; align-items: center; justify-content: center; border: var(--border-w) solid var(--line); background: var(--control-bg); color: var(--ink); border-radius: 8px; min-width: 42px; height: 38px; padding: 0 10px; font: inherit; font-size: 13px; text-decoration: none; }
+    .controls .pdf-btn:hover { background: var(--lime); }
+    @media print { .controls .pdf-btn { display: none; } }
   </style>
   <style>
     html.preview .controls, html.preview .notes, html.preview .timer, html.preview .jump-dialog { display: none !important; }
@@ -578,14 +581,10 @@
         <p class="lede">One server teaches you the protocol. A portfolio teaches you what MCP actually is — and the mistakes I only found by building the next one.</p>
         <p class="lede" style="margin-top:14px">Every example here is in one small server you can clone tonight: <strong>MCP Demo v3.0.1</strong> — <a href="https://github.com/markusvankempen/mcp-ticket-demo">github.com/markusvankempen/mcp-ticket-demo</a></p>
         <p class="source">Markus van Kempen · Mensch, Maker and Developer<br><em>No bug too small, no syntax too weird.</em></p>
-        <a class="slides-qr" href="https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/" target="_blank" rel="noopener">
-          <img src="qr-slides.png" alt="QR code: slides online">
-          <span>Slides online</span>
-        </a>
         <div class="contact">
           <a href="mailto:mvankempen@ca.ibm.com">mvankempen@ca.ibm.com</a>
           <a href="mailto:markus.van.kempen@gmail.com">markus.van.kempen@gmail.com</a>
-          <a href="https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/">Slides online</a>
+          <a href="/linuxfoundation-mcp-dev-summit/MCP-as-a-Platform-MCPDevSummit-Oct2026.pdf" download>Download the PDF</a>
           <a href="https://markusvankempen.github.io/">markusvankempen.github.io</a>
         </div>
       </div>
@@ -1037,7 +1036,7 @@ Third in ten minutes.</div>
       data-ref2="markusvankempen.github.io"
       data-ref2-url="https://markusvankempen.github.io/">
       <div class="content">
-        <div class="close-split">
+        <div class="close-split no-qr">
           <div>
             <div class="eyebrow">Thank you</div>
             <h1>Build one.<br>Publish it.<br><span class="accent">Make the next one easier to use.</span></h1>
@@ -1047,16 +1046,12 @@ Third in ten minutes.</div>
             <div class="contact">
               <a href="mailto:mvankempen@ca.ibm.com">mvankempen@ca.ibm.com</a>
               <a href="mailto:markus.van.kempen@gmail.com">markus.van.kempen@gmail.com</a>
-              <a href="https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/">Slides online</a>
+              <a href="/linuxfoundation-mcp-dev-summit/MCP-as-a-Platform-MCPDevSummit-Oct2026.pdf" download>Download the PDF</a>
               <a href="https://markusvankempen.github.io/">markusvankempen.github.io</a>
             </div>
             <p class="whereabouts">Markus <span class="rank">· Research · Floor 7½</span> <span class="emoji">🏢🤏</span></p>
             <p class="small" style="margin-top:12px">Backup slides follow — press → for acronyms, publish, deploy, auth, the curl demo, testing, and how to run the demo tonight.</p>
           </div>
-          <aside class="qr-card">
-            <img src="session-feedback-qr.png" alt="Sessionize QR code for session feedback">
-            <p class="caption">Scan for session feedback</p>
-          </aside>
         </div>
       </div>
     </section>
@@ -1431,15 +1426,11 @@ The choices are in the brackets.</div>
         <div class="eyebrow">Appendix · Try it tonight</div>
         <h2>Clone the repo.<br><span class="accent">Run it in about ten minutes.</span></h2>
         <p class="lede">Every example in this talk is in <strong>MCP Demo</strong>. Personal open-source project. Slides: <a href="https://markusvankempen.github.io/linuxfoundation-mcp-dev-summit/">linuxfoundation-mcp-dev-summit</a> · You need Node 18+.</p>
-        <div class="close-split split-qr" style="margin-top:16px">
+        <div class="close-split no-qr" style="margin-top:16px">
           <div class="mono">git clone https://github.com/markusvankempen/mcp-ticket-demo
 cd mcp-ticket-demo/server
 npm install
 npm run http</div>
-          <aside class="qr-card">
-            <img src="qr-mcp-ticket-demo.png" alt="QR code for github.com/markusvankempen/mcp-ticket-demo">
-            <p class="caption">Scan for the repo</p>
-          </aside>
         </div>
         <div class="grid three" style="margin-top:18px">
           <div class="panel"><h3>Is it alive?</h3><p>Open <code>http://127.0.0.1:8787/health</code></p></div>
@@ -1483,12 +1474,8 @@ npm run http</div>
           <div class="panel"><h3>Old friend</h3><p><a href="mailto:markus.van.kempen@gmail.com">markus.van.kempen@gmail.com</a></p><p class="small">Open source, and anything in this deck</p></div>
           <div class="panel"><h3>Portfolio</h3><p><a href="https://markusvankempen.github.io/">markusvankempen.github.io</a></p><p class="small">Every server and extension this talk refers to</p></div>
         </div>
-        <div class="close-split split-qr" style="margin-top:18px">
+        <div class="close-split no-qr" style="margin-top:18px">
           <p class="lede">Start with <a href="https://github.com/markusvankempen/mcp-ticket-demo">MCP Demo</a> — every example from this talk is in it. <em>No bug too small, no syntax too weird.</em></p>
-          <aside class="qr-card">
-            <img src="qr-portfolio.png" alt="QR code for markusvankempen.github.io">
-            <p class="caption">Scan for the portfolio</p>
-          </aside>
         </div>
       </div>
     </section>
@@ -1500,6 +1487,7 @@ npm run http</div>
       <button id="next" title="Next slide (→)">→</button>
       <button id="timerToggle" title="Toggle 25-minute timer (T)">T</button>
       <button id="presenterToggle" title="Presenter view in a second window: notes, timer, next slide (P)">P</button>
+      <a class="pdf-btn" href="/linuxfoundation-mcp-dev-summit/MCP-as-a-Platform-MCPDevSummit-Oct2026.pdf" download title="Download the slides as PDF">PDF</a>
       <button id="themeToggle" title="Color scheme — Dark. Click to cycle Light → Dark → Projector">C</button>
       <button id="transitionToggle" title="Transition — Fade. Click to cycle Fade → Slide → Rise → Cut (A)">A</button>
       <span class="timer" id="timer">00:00</span>
