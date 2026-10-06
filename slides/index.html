@@ -564,6 +564,21 @@
     .todo .tag { justify-self: start; }
     .slides-qr span { display: block; margin-top: 4px; font: 600 12px var(--code); color: #0b1210; }
     @media print { .slides-qr { right: 56px; bottom: 70px; width: 150px; box-shadow: none; } }
+    @media screen and (max-width: 720px), screen and (max-height: 500px) {
+      .summit-logo { top: 12px; right: 12px; height: 40px; padding: 4px 7px; }
+      .footer, #timerToggle, #presenterToggle, #transitionToggle, .timer { display: none !important; }
+      .controls { left: 0; right: 0; bottom: 0; justify-content: center; gap: 8px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); background: var(--paper); border-top: var(--border-w) solid var(--line); }
+      .controls button, .controls .pdf-btn { height: 40px; min-width: 48px; }
+      .counter { margin: 0 6px; white-space: nowrap; }
+      .deck .slide .content, .deck .slide[data-appendix="true"] .content { margin-top: 64px; }
+      .slide { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+      .close-split, .close-split.split-qr { grid-template-columns: minmax(0, 1fr); }
+      .qr-card { max-width: 220px; }
+      .slides-qr { position: static; display: block; width: 160px; margin-top: 20px; }
+      .deck .mono, .deck .mono.md, .deck .mono.compact, .deck .mono.lg { font-size: 12.5px; overflow-wrap: anywhere; }
+      .deck .shot { height: auto !important; }
+    }
+    @media screen and (max-width: 720px) { .todo li { grid-template-columns: 1fr; gap: 6px; } }
   </style>
 </head>
 <body>
@@ -1956,6 +1971,21 @@ npm run http</div>
         if (window.opener && !window.opener.closed) window.opener.postMessage({ mcpDeck: 'hello' }, '*');
       }
       document.getElementById('presenterToggle').addEventListener('click', openPresenter);
+
+      let touchX = null, touchY = 0;
+      document.addEventListener('touchstart', (event) => {
+        if (event.touches.length !== 1) { touchX = null; return; }
+        touchX = event.touches[0].clientX; touchY = event.touches[0].clientY;
+      }, { passive: true });
+      document.addEventListener('touchend', (event) => {
+        if (touchX === null) return;
+        const dx = event.changedTouches[0].clientX - touchX;
+        const dy = event.changedTouches[0].clientY - touchY;
+        touchX = null;
+        if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+        if (event.target.closest('.mono, .mode-table, input')) return;
+        show(current + (dx < 0 ? 1 : -1));
+      }, { passive: true });
 
       const requested = Number.parseInt(location.hash.slice(1), 10);
       show(Number.isFinite(requested) && requested > 0 ? requested - 1 : 0);
